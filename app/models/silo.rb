@@ -1,0 +1,2 @@
+class Silo < ApplicationRecord
+end
