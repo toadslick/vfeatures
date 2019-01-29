@@ -10,29 +10,35 @@ RSpec.describe FeaturesController, type: :controller do
   end
 
   describe "GET #show" do
+    let(:feature) { create :feature }
+
     it "returns http success" do
-      get :show
+      get :show, params: { id: feature.id }
       expect(response).to have_http_status(:success)
     end
   end
 
-  describe "GET #create" do
+  describe "POST #create" do
     it "returns http success" do
-      get :create
+      post :create
       expect(response).to have_http_status(:success)
     end
   end
 
-  describe "GET #update" do
+  describe "PUT #update" do
+    let(:feature) { create :feature }
+
     it "returns http success" do
-      get :update
+      put :update, params: { id: feature.id }
       expect(response).to have_http_status(:success)
     end
   end
 
-  describe "GET #destroy" do
+  describe "DELETE #destroy" do
+    let(:feature) { create :feature }
+
     it "returns http success" do
-      get :destroy
+      delete :destroy, params: { id: feature.id }
       expect(response).to have_http_status(:success)
     end
   end
