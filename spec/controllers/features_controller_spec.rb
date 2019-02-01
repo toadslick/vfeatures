@@ -2,45 +2,103 @@ require 'rails_helper'
 
 RSpec.describe FeaturesController, type: :controller do
 
-  describe "GET #index" do
-    it "returns http success" do
+  describe 'GET #index' do
+    let!(:features) { create_list(:feature, 3) }
+
+    it 'returns a list of every feature' do
       get :index
-      expect(response).to have_http_status(:success)
+      expect(response.status).to eq(200)
+      expect(response.body).to eq(features.to_json)
     end
   end
 
-  describe "GET #show" do
-    let(:feature) { create :feature }
+  describe 'GET #show' do
+    let!(:feature) { create(:feature) }
+    let!(:flags) { create_list(:flag, 3, feature: feature) }
 
-    it "returns http success" do
+    it 'returns a single feature and its flags for every release' do
       get :show, params: { id: feature.id }
-      expect(response).to have_http_status(:success)
+      json = JSON.parse(response.body)
+      expect(response.status).to eq(200)
+      expect(json.keys).to include('key', 'id', 'flags')
+      expect(json[:flags].length).to eq(3)
+      expect(json[:flags][0].keys).to include('key', 'id', 'releases')
+      expect(json[:flags][0][:releases].length).to eq(3)
+      expect(json[:flags][0][:releases][0].key).to include('key', 'id')
     end
   end
 
-  describe "POST #create" do
-    it "returns http success" do
-      post :create
-      expect(response).to have_http_status(:success)
+  describe 'POST #create' do
+    context 'with valid params' do
+      it 'remove leading and trailing whitespace from the feature key' do
+
+      end
+      it 'creates a new feature' do
+
+      end
+      it 'creates an associated flag that is disabled for every release' do
+
+      end
+      it 'returns the new feature' do
+
+      end
+    end
+
+    context 'with invalid params' do
+      it 'does not create a feature or any flags or silos' do
+
+      end
+      it 'returns a validation error if the feature key already exists' do
+
+      end
+      it 'returns a validation error if the feature key contains any non-alphanumeric characters' do
+
+      end
+      it 'returns a validation error if the feature key is blank' do
+
+      end
     end
   end
 
-  describe "PUT #update" do
-    let(:feature) { create :feature }
+  describe 'PUT #update' do
+    context 'with valid params' do
 
-    it "returns http success" do
-      put :update, params: { id: feature.id }
-      expect(response).to have_http_status(:success)
+      it 'remove leading and trailing whitespace from the feature key' do
+
+      end
+      it 'updates the feature key' do
+
+      end
+      it 'returns the updated feature' do
+
+      end
+    end
+
+    context 'with invalid params' do
+      it 'does not update the feature' do
+
+      end
+      it 'returns a validation error if the feature key already exists' do
+
+      end
+      it 'returns a validation error if the feature key contains any non-alphanumeric characters' do
+
+      end
+      it 'returns a validation error if the feature key is blank' do
+
+      end
     end
   end
 
-  describe "DELETE #destroy" do
-    let(:feature) { create :feature }
+  describe 'DELETE #destroy' do
+    it 'deletes the feature' do
 
-    it "returns http success" do
-      delete :destroy, params: { id: feature.id }
-      expect(response).to have_http_status(:success)
+    end
+    it 'deletes the associated flag for every silo' do
+
+    end
+    it 'returns a success response with no body' do
+
     end
   end
-
 end
