@@ -15,9 +15,10 @@ RSpec.describe FeaturesController, type: :controller do
   describe 'GET #show' do
     let!(:feature) { create(:feature) }
     let!(:flags) { create_list(:flag, 3, feature: feature) }
+    let!(:params) {{ id: feature.id }}
 
     it 'returns a single feature and its flags for every release' do
-      get :show, params: { id: feature.id }
+      get :show, params: params
       json = JSON.parse(response.body)
       expect(response.status).to eq(200)
       expect(response.body).to match_json_schema(:feature)
@@ -91,24 +92,57 @@ RSpec.describe FeaturesController, type: :controller do
   end
 
   describe 'PUT #update' do
+    let!(:feature) { create(:feature) }
+    let!(:flags) { create_list(:flag, 3, feature: feature) }
+
     context 'with valid params' do
+      let!(:params) {{
+        id: feature.id,
+        feature: {
+          key: "  \n foo \t ",
+        }
+      }}
 
       it 'remove leading and trailing whitespace from the feature key' do
-
-      end
-
-      it 'updates the feature key' do
-
+        expect {
+          put :update, params: params
+        }.to change{ feature.reload.key }.to('foo')
       end
 
       it 'returns the updated feature' do
+        put :update, params: params
+        expect(assigns(:feature)).to eq(feature)
+        expect(response.status).to eq(200)
+        expect(response.body).to match_json_schema(:feature)
+      end
+    end
 
+    context 'with valid params for associated flags' do
+      let!(:params) {{
+        id: feature.id,
+        feature: {
+          flags_attributes: [
+            { id: flags[0].id, enabled: true },
+            { id: flags[2].id, enabled: true },
+          ]
+        }
+      }}
+
+      it 'updates the enabled state of any flags' do
+        put :update, params: params
+        expect(flags[0].reload.enabled).to eq(true)
+        expect(flags[1].reload.enabled).to eq(false)
+        expect(flags[2].reload.enabled).to eq(true)
       end
     end
 
     context 'with invalid params' do
 
       it 'does not update the feature' do
+
+      end
+
+      it 'does not update any flags' do
 
       end
 

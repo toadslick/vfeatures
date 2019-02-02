@@ -1,6 +1,7 @@
 class Feature < ApplicationRecord
 
   has_many :flags
+  accepts_nested_attributes_for :flags, update_only: true
 
   validates :key, {
     format: {
@@ -20,5 +21,4 @@ class Feature < ApplicationRecord
     end
     feature
   end
-
 end
