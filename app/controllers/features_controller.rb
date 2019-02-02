@@ -9,6 +9,12 @@ class FeaturesController < ApplicationController
   end
 
   def create
+    @feature = Feature.new(feature_params)
+    if @feature.save
+      render 'show', status: 201
+    else
+      render_errors @feature
+    end
   end
 
   def update
@@ -18,6 +24,10 @@ class FeaturesController < ApplicationController
   end
 
   private
+
+  def feature_params
+    params.require(:feature).permit(:key)
+  end
 
   def find_feature
     Feature

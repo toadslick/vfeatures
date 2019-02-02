@@ -34,8 +34,9 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'rspec-rails'
   gem 'shoulda-matchers'
-  gem "json-schema"
-  gem "json-schema-rspec"
+  gem 'json-schema'
+  gem 'json-schema-rspec'
+  gem 'rails-controller-testing'
 end
 
 group :development do

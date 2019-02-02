@@ -1,6 +1,12 @@
 class ApplicationController < ActionController::API
   before_action :set_request_format
 
+  protected
+
+  def render_errors(record)
+    render json: { errors: record.errors }, status: 422
+  end
+
   private
 
   def set_request_format
