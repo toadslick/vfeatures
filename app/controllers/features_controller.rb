@@ -1,11 +1,11 @@
 class FeaturesController < ApplicationController
 
   def index
-    render json: Feature.all
+    @features = Feature.all
   end
 
   def show
-    render json: feature
+    @feature = find_feature
   end
 
   def create
@@ -19,10 +19,9 @@ class FeaturesController < ApplicationController
 
   private
 
-  def feature
+  def find_feature
     Feature
       .includes({ flags: :release })
       .find(params.require(:id))
   end
-
 end

@@ -32,15 +32,12 @@ definitions:
       type: object
       required:
       - id
-      - key
       - created_at
       - updated_at
       - release
       properties:
         id:
           $ref: '#/definitions/id'
-        key:
-          $ref: '#/definitions/key'
         created_at:
           $ref: '#/definitions/datetime'
         updated_at:

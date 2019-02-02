@@ -21,8 +21,7 @@ RSpec.describe FeaturesController, type: :controller do
       json = JSON.parse(response.body)
       expect(response.status).to eq(200)
       expect(response.body).to match_json_schema(:feature)
-      expect(json[:flags].length).to eq(3)
-      expect(json[:flags][0][:releases].length).to eq(3)
+      expect(json['flags'].length).to eq(3)
     end
   end
 
