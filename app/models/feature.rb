@@ -1,7 +1,9 @@
 class Feature < ApplicationRecord
 
   has_many :flags
-  accepts_nested_attributes_for :flags, update_only: true
+  accepts_nested_attributes_for :flags,
+    update_only: true,
+    reject_if: :new_record?
 
   validates :key, {
     format: {

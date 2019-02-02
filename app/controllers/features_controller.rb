@@ -9,8 +9,7 @@ class FeaturesController < ApplicationController
   end
 
   def create
-    required_params = params.require(:feature).permit(:key)
-    @feature = Feature.build_with_flags(required_params)
+    @feature = Feature.build_with_flags(params_for_create)
     if @feature.save
       render 'show', status: 201
     else
@@ -19,9 +18,8 @@ class FeaturesController < ApplicationController
   end
 
   def update
-    required_params = params.require(:feature).permit(:key, :flags_attributes)
     @feature = find_feature
-    if @feature.update_attributes(required_params)
+    if @feature.update_attributes(params_for_update)
       render 'show', status: 200
     else
       render_errors @feature
@@ -32,6 +30,22 @@ class FeaturesController < ApplicationController
   end
 
   private
+
+  def params_for_create
+    params
+      .require(:feature)
+      .permit(:key)
+  end
+
+  def params_for_update
+    params
+      .require(:feature)
+      .permit(:key, {
+        flags_attributes: [
+          :id, :enabled,
+        ]
+      })
+  end
 
   def find_feature
     Feature
