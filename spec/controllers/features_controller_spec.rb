@@ -57,20 +57,32 @@ RSpec.describe FeaturesController, type: :controller do
 
     context 'with invalid params' do
 
-      it 'does not create a feature or any flags or silos' do
-
-      end
-
-      it 'returns a validation error if the feature key already exists' do
-
+      it 'returns a validation error if the feature key already exists, case insensitive' do
+        create(:feature, key: 'foo')
+        params = { feature: { key: 'FOO' }}
+        expect {
+          post :create, params: params
+        }.to_not change{ Feature.count }
+        expect(assigns(:feature)).to have_validation_error(:key, :taken)
+        expect(response.body).to match_json_schema(:errors)
       end
 
       it 'returns a validation error if the feature key contains any non-alphanumeric characters' do
-
+        params = { feature: { key: ' f o o ' }}
+        expect {
+          post :create, params: params
+        }.to_not change{ Feature.count }
+        expect(assigns(:feature)).to have_validation_error(:key, :invalid)
+        expect(response.body).to match_json_schema(:errors)
       end
 
       it 'returns a validation error if the feature key is blank' do
-
+        params = { feature: { key: " \t \n " }}
+        expect {
+          post :create, params: params
+        }.to_not change{ Feature.count }
+        expect(assigns(:feature)).to have_validation_error(:key, :blank)
+        expect(response.body).to match_json_schema(:errors)
       end
     end
   end

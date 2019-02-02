@@ -1,0 +1,20 @@
+type: object
+required:
+- errors
+properties:
+  errors:
+    additionalProperties: false
+    patternProperties:
+      '^[a-z0-9_]+$':
+        type: array
+        uniqueItems: true
+        minLength: 1
+        items:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              type: string
+            value:
+              type: string
