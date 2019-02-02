@@ -8,7 +8,7 @@ RSpec.describe FeaturesController, type: :controller do
     it 'returns a list of every feature' do
       get :index
       expect(response.status).to eq(200)
-      expect(response.body).to match_json_schema('features')
+      expect(response.body).to match_json_schema(:features)
     end
   end
 
@@ -20,9 +20,9 @@ RSpec.describe FeaturesController, type: :controller do
       get :show, params: { id: feature.id }
       json = JSON.parse(response.body)
       expect(response.status).to eq(200)
-      # expect(json[:flags].length).to eq(3)
-      # expect(json[:flags][0][:releases].length).to eq(3)
-      # expect(response.body).to match_json_schema('feature_details')
+      expect(response.body).to match_json_schema(:feature)
+      expect(json[:flags].length).to eq(3)
+      expect(json[:flags][0][:releases].length).to eq(3)
     end
   end
 

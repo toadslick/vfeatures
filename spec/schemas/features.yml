@@ -1,0 +1,28 @@
+---
+definitions:
+  id:
+    type: integer
+  key:
+    type: string
+  datetime:
+    type: string
+    format: date-time
+
+type: array
+uniqueItems: true
+items:
+  type: object
+  required:
+  - id
+  - key
+  - created_at
+  - updated_at
+  properties:
+    id:
+      $ref: '#/definitions/id'
+    key:
+      $ref: '#/definitions/key'
+    created_at:
+      $ref: '#/definitions/datetime'
+    updated_at:
+      $ref: '#/definitions/datetime'
