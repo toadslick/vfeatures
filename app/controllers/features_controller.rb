@@ -9,7 +9,7 @@ class FeaturesController < ApplicationController
   end
 
   def create
-    @feature = Feature.new(feature_params)
+    @feature = Feature.build_with_flags(feature_params)
     if @feature.save
       render 'show', status: 201
     else

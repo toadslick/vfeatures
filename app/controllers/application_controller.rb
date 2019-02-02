@@ -4,7 +4,6 @@ class ApplicationController < ActionController::API
   protected
 
   def render_errors(record)
-    p record.errors.details.to_json
     render json: { errors: record.errors.details }, status: 422
   end
 

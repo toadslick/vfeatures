@@ -13,4 +13,12 @@ class Feature < ApplicationRecord
     },
   }
 
+  def self.build_with_flags(params)
+    feature = Feature.new(params)
+    Release.all.each do |release|
+      feature.flags.build({ release: release })
+    end
+    feature
+  end
+
 end
