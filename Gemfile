@@ -39,3 +39,6 @@ end
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
 end
+
+# Added at 2019-02-01 17:54:04 -0800 by jchildress:
+gem "json-schema", "~> 2.8"
