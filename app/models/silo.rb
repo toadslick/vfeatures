@@ -2,7 +2,7 @@ class Silo < ApplicationRecord
 
   belongs_to :release
 
-  validates :key, {
+  validates :key,
     format: {
       with: /\A[a-z0-9]+\z/i,
       allow_blank: true,
@@ -10,11 +10,9 @@ class Silo < ApplicationRecord
     presence: true,
     uniqueness: {
       case_sensitive: false,
-    },
-  }
+    }
 
-  validates :release, {
-    presence: true,
-  }
+  validates :release,
+    presence: true
 
 end

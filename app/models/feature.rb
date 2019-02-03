@@ -6,7 +6,7 @@ class Feature < ApplicationRecord
     update_only: true,
     reject_if: :new_record?
 
-  validates :key, {
+  validates :key,
     format: {
       with: /\A[a-z0-9]+\z/i,
       allow_blank: true,
@@ -14,8 +14,7 @@ class Feature < ApplicationRecord
     presence: true,
     uniqueness: {
       case_sensitive: false,
-    },
-  }
+    }
 
   # Build a new Feature and an associated Flag for each existing Release.
   # When the record is saved, both the Feature and all of its Flags

@@ -1,0 +1,53 @@
+---
+type: object
+required:
+- id
+- key
+- created_at
+- updated_at
+- flags
+properties:
+  id:
+    $ref: '#/definitions/id'
+  key:
+    $ref: '#/definitions/string'
+  created_at:
+    $ref: '#/definitions/datetime'
+  updated_at:
+    $ref: '#/definitions/datetime'
+  flags:
+    $ref: '#/definitions/flags'
+
+definitions:
+  id:
+    type: integer
+  string:
+    type: string
+  boolean:
+    type: boolean
+  datetime:
+    type: string
+    format: date-time
+
+  flags:
+    type: array
+    uniqueItems: true
+    items:
+      type: object
+      required:
+      - id
+      - enabled
+      - created_at
+      - updated_at
+      - feature_id
+      properties:
+        id:
+          $ref: '#/definitions/id'
+        enabled:
+          $ref: '#/definitions/boolean'
+        created_at:
+          $ref: '#/definitions/datetime'
+        updated_at:
+          $ref: '#/definitions/datetime'
+        feature_id:
+          $ref: '#/definitions/id'
