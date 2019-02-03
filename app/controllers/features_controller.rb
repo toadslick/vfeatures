@@ -53,11 +53,11 @@ class FeaturesController < ApplicationController
       })
   end
 
-  # When looking up a single feature, reduce the number of database queries
-  # by including all flags (and their releases) associated with the feature.
+  # Reduce the number of database queries by including all flags associated
+  # with the feature in a single query.
   def find_feature
     Feature
-      .includes({ flags: :release })
+      .includes(:flags)
       .find(params.require(:id))
   end
 end
