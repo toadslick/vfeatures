@@ -9,6 +9,12 @@ class SilosController < ApplicationController
   end
 
   def create
+    @silo = Silo.new(allowed_params)
+    if @silo.save
+      render 'show', status: 201
+    else
+      render_errors @silo
+    end
   end
 
   def update
@@ -18,6 +24,10 @@ class SilosController < ApplicationController
   end
 
   private
+
+  def allowed_params
+    params.require(:silo).permit(:key, :release_id)
+  end
 
   def find_silo
     Silo

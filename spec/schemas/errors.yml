@@ -7,7 +7,9 @@ properties:
     patternProperties:
       '^[a-z0-9_]+$':
         type: array
-        uniqueItems: true
+        # NOTE: Rails may add duplicate errors when
+        # validating the presence of an associated model.
+        # uniqueItems: true
         minLength: 1
         items:
           type: object

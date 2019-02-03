@@ -28,4 +28,67 @@ RSpec.describe SilosController, type: :controller do
     end
   end
 
+  describe 'POST #create' do
+    let!(:release) { create(:release) }
+
+    context 'with valid params' do
+      let!(:params) {{ silo: {
+        key: "  \n release-4.20 \t ",
+        release_id: release.id,
+      }}}
+
+      it 'remove leading and trailing whitespace from the silo key' do
+        post :create, params: params
+        expect(assigns(:silo).key).to eq('release-4.20')
+      end
+
+      it 'creates a new silo' do
+        expect {
+          post :create, params: params
+        }.to change{ Silo.count }.by(1)
+      end
+
+      it 'returns the new silo' do
+        post :create, params: params
+        expect(response.status).to eq(201)
+        expect(response.body).to match_json_schema(:silo)
+      end
+    end
+
+    context 'with invalid params' do
+
+      it 'does not create a silo' do
+        expect {
+          post :create, params: { silo: { key: '', release_id: release.id }}
+        }.to_not change{ Silo.count }
+        expect(response.status).to eq(422)
+      end
+
+      it 'returns a validation error if the silo key already exists, case insensitive' do
+        create(:silo, key: 'foo')
+        post :create, params: { silo: { key: ' FOO ', release_id: release.id }}
+        expect(assigns(:silo)).to have_validation_error(:key, :taken)
+        expect(response.body).to match_json_schema(:errors)
+      end
+
+      it 'returns a validation error if the silo key contains invalid characters' do
+        post :create, params: { silo: { key: '!@#$%', release_id: release.id }}
+        expect(assigns(:silo)).to have_validation_error(:key, :invalid)
+        expect(response.body).to match_json_schema(:errors)
+      end
+
+      it 'returns a validation error if the silo key is blank' do
+        post :create, params: { silo: { key: " \t \n ", release_id: release.id }}
+        expect(assigns(:silo)).to have_validation_error(:key, :blank)
+        expect(response.body).to match_json_schema(:errors)
+      end
+
+      it 'returns a validation error if the release_id does not belong to a release' do
+        post :create, params: { silo: { key: 'release-4.20', release_id: 666 }}
+        expect(assigns(:silo)).to have_validation_error(:release, :blank)
+        expect(response.body).to match_json_schema(:errors)
+      end
+    end
+  end
+
 end
