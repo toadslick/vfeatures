@@ -5,7 +5,7 @@ required:
 - key
 - created_at
 - updated_at
-- flags
+- release
 properties:
   id:
     $ref: '#/definitions/id'
@@ -15,8 +15,8 @@ properties:
     $ref: '#/definitions/datetime'
   updated_at:
     $ref: '#/definitions/datetime'
-  flags:
-    $ref: '#/definitions/flags'
+  release:
+    $ref: '#/definitions/release'
 
 definitions:
   id:
@@ -45,26 +45,3 @@ definitions:
         $ref: '#/definitions/datetime'
       updated_at:
         $ref: '#/definitions/datetime'
-
-  flags:
-    type: array
-    uniqueItems: true
-    items:
-      type: object
-      required:
-      - id
-      - enabled
-      - created_at
-      - updated_at
-      - release
-      properties:
-        id:
-          $ref: '#/definitions/id'
-        enabled:
-          $ref: '#/definitions/boolean'
-        created_at:
-          $ref: '#/definitions/datetime'
-        updated_at:
-          $ref: '#/definitions/datetime'
-        release:
-          $ref: '#/definitions/release'
