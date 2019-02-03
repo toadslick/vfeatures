@@ -11,12 +11,10 @@ class ApplicationController < ActionController::API
     render json: { errors: record.errors.details }, status: 422
   end
 
-  def render_success
-    head :ok
-  end
-
   private
 
+  # Force controllers to respond as if the request specified a JSON format.
+  # This prevents controllers from responding with HTML by default.
   def set_request_format
     request.format = :json
   end

@@ -28,17 +28,21 @@ class FeaturesController < ApplicationController
 
   def destroy
     find_feature.destroy
-    render_success
+    head 200
   end
 
   private
 
+  # When creating a feature,
+  # only the 'key' of the feature may be specified.
   def params_for_create
     params
       .require(:feature)
       .permit(:key)
   end
 
+  # When updating a feature,
+  # allow the 'enabled' status of any associated flags to be updated.
   def params_for_update
     params
       .require(:feature)
@@ -49,6 +53,8 @@ class FeaturesController < ApplicationController
       })
   end
 
+  # When looking up a single feature, reduce the number of database queries
+  # by including all flags (and their releases) associated with the feature.
   def find_feature
     Feature
       .includes({ flags: :release })
