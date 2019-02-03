@@ -18,6 +18,12 @@ class SilosController < ApplicationController
   end
 
   def update
+    @silo = find_silo
+    if @silo.update_attributes(allowed_params)
+      render 'show', status: 200
+    else
+      render_errors @silo
+    end
   end
 
   def destroy

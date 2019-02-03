@@ -91,4 +91,36 @@ RSpec.describe SilosController, type: :controller do
     end
   end
 
+  describe 'PUT #update' do
+    let!(:silo) { create(:silo) }
+
+    context 'with valid params' do
+
+      it 'remove leading and trailing whitespace from the silo key' do
+        expect {
+          put :update, params: {
+            id: silo.id,
+            silo: { key: "  \n release-4.20 \t " }}
+        }.to change{ silo.reload.key }.to('release-4.20')
+      end
+
+      it 'allows the associated release to be changed' do
+        release = create(:release)
+        expect {
+          put :update, params: {
+            id: silo.id,
+            silo: { release_id: release.id }}
+        }.to change{ silo.reload.release }.to(release)
+      end
+
+      it 'returns the updated silo' do
+        put :update, params: {
+          id: silo.id,
+          silo: { key: 'foo' }}
+        expect(assigns(:silo)).to eq(silo)
+        expect(response.status).to eq(200)
+        expect(response.body).to match_json_schema(:silo)
+      end
+    end
+  end
 end
