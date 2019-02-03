@@ -7,8 +7,10 @@ RSpec.describe FeaturesController, type: :controller do
 
     it 'returns a list of every feature' do
       get :index
+      json = JSON.parse(response.body)
       expect(response.status).to eq(200)
       expect(response.body).to match_json_schema(:features)
+      expect(json.length).to eq(3)
     end
   end
 
@@ -192,7 +194,7 @@ RSpec.describe FeaturesController, type: :controller do
       end
 
       it 'does not update any associated flags' do
-        flag = create(:flag, { feature: feature })
+        flag = create(:flag, feature: feature)
         params = {
           id: feature.id,
           feature: {
@@ -237,7 +239,6 @@ RSpec.describe FeaturesController, type: :controller do
 
   describe 'DELETE #destroy' do
     let!(:feature) { create(:feature) }
-    let!(:flags) { create_list(:flag, 3, feature: feature) }
     let!(:params) {{ id: feature.id }}
 
     it 'deletes the feature' do
@@ -247,6 +248,7 @@ RSpec.describe FeaturesController, type: :controller do
     end
 
     it 'deletes the associated flag for every silo' do
+      create_list(:flag, 3, feature: feature)
       expect {
         delete :destroy, params: params
       }.to change{ Flag.count }.by(-3)
