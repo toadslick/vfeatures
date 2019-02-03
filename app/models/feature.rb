@@ -17,6 +17,9 @@ class Feature < ApplicationRecord
     },
   }
 
+  # Build a new Feature and an associated Flag for each existing Release.
+  # When the record is saved, both the Feature and all of its Flags
+  # will be created at the same time. Flags are disabled by default.
   def self.build_with_flags(params)
     feature = Feature.new(params)
     Release.all.each do |release|
