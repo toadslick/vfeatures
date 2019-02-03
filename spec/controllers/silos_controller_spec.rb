@@ -33,13 +33,13 @@ RSpec.describe SilosController, type: :controller do
 
     context 'with valid params' do
       let!(:params) {{ silo: {
-        key: "  \n release-4.20 \t ",
+        key: "  \n pr53 \t ",
         release_id: release.id,
       }}}
 
       it 'remove leading and trailing whitespace from the silo key' do
         post :create, params: params
-        expect(assigns(:silo).key).to eq('release-4.20')
+        expect(assigns(:silo).key).to eq('pr53')
       end
 
       it 'creates a new silo' do
@@ -72,7 +72,7 @@ RSpec.describe SilosController, type: :controller do
       end
 
       it 'returns a validation error if the silo key contains invalid characters' do
-        post :create, params: { silo: { key: '!@#$%', release_id: release.id }}
+        post :create, params: { silo: { key: 'f-o.o_', release_id: release.id }}
         expect(assigns(:silo)).to have_validation_error(:key, :invalid)
         expect(response.body).to match_json_schema(:errors)
       end
@@ -84,7 +84,7 @@ RSpec.describe SilosController, type: :controller do
       end
 
       it 'returns a validation error if the release_id does not belong to a release' do
-        post :create, params: { silo: { key: 'release-4.20', release_id: 666 }}
+        post :create, params: { silo: { key: 'pr53', release_id: 666 }}
         expect(assigns(:silo)).to have_validation_error(:release, :blank)
         expect(response.body).to match_json_schema(:errors)
       end
@@ -100,8 +100,8 @@ RSpec.describe SilosController, type: :controller do
         expect {
           put :update, params: {
             id: silo.id,
-            silo: { key: "  \n release-4.20 \t " }}
-        }.to change{ silo.reload.key }.to('release-4.20')
+            silo: { key: "  \n pr53 \t " }}
+        }.to change{ silo.reload.key }.to('pr53')
       end
 
       it 'allows the associated release to be changed' do

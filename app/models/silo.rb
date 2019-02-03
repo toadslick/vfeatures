@@ -4,7 +4,7 @@ class Silo < ApplicationRecord
 
   validates :key, {
     format: {
-      with: /\A[a-z0-9_\.-]+\z/i,
+      with: /\A[a-z0-9]+\z/i,
       allow_blank: true,
     },
     presence: true,

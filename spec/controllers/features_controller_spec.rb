@@ -68,6 +68,7 @@ RSpec.describe FeaturesController, type: :controller do
       end
 
       it 'does not create any flags' do
+        releases = create_list(:release, 3)
         expect {
           post :create, params: { feature: { key: '' }}
         }.to_not change{ Flag.count }
@@ -167,13 +168,14 @@ RSpec.describe FeaturesController, type: :controller do
         }.to_not change{ unrelated_flag.reload.attributes }
       end
 
-      it 'does not update the associated release for any flag' do
+      it 'does not update the associated release or feature for any flag' do
         params = {
           id: feature.id,
           feature: {
             flags_attributes: [{
               id: flags[0].id,
-              release_id: create(:release).id
+              release_id: create(:release).id,
+              feature_id: create(:feature).id,
             }] }}
         expect {
           put :update, params: params
@@ -247,7 +249,7 @@ RSpec.describe FeaturesController, type: :controller do
       }.to change{ Feature.count }.by(-1)
     end
 
-    it 'deletes the associated flag for every silo' do
+    it 'deletes the associated flag for every release' do
       create_list(:flag, 3, feature: feature)
       expect {
         delete :destroy, params: params
