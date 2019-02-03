@@ -136,6 +136,38 @@ RSpec.describe FeaturesController, type: :controller do
       end
     end
 
+    context 'with invalid ids for associated flags' do
+
+      it 'does not create new flags if an id is omitted' do
+        params = {
+          id: feature.id,
+          feature: {
+            flags_attributes: [
+              { enabled: true },
+            ]
+          }
+        }
+        expect {
+          put :update, params: params
+        }.to_not change{ Flag.count }
+      end
+
+      it 'does not update flags that belong to a different feature' do
+        unrelated_flag = create(:flag)
+        params = {
+          id: feature.id,
+          feature: {
+            flags_attributes: [
+              { id: unrelated_flag.id, enabled: true },
+            ]
+          }
+        }
+        expect {
+          put :update, params: params
+        }.to_not change{ unrelated_flag.reload.enabled }
+      end
+    end
+
     context 'with invalid params' do
 
       it 'does not update the feature' do
