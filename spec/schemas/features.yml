@@ -1,13 +1,4 @@
 ---
-definitions:
-  id:
-    type: integer
-  key:
-    type: string
-  datetime:
-    type: string
-    format: date-time
-
 type: array
 uniqueItems: true
 items:
@@ -19,10 +10,12 @@ items:
   - updated_at
   properties:
     id:
-      $ref: '#/definitions/id'
+      type: integer
     key:
-      $ref: '#/definitions/key'
+      type: string
     created_at:
-      $ref: '#/definitions/datetime'
+      type: string
+      format: date-time
     updated_at:
-      $ref: '#/definitions/datetime'
+      type: string
+      format: date-time

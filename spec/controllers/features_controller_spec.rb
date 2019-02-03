@@ -93,7 +93,6 @@ RSpec.describe FeaturesController, type: :controller do
 
   describe 'PUT #update' do
     let!(:feature) { create(:feature) }
-    let!(:flags) { create_list(:flag, 3, feature: feature) }
 
     context 'with valid params' do
       let!(:params) {{
@@ -118,6 +117,7 @@ RSpec.describe FeaturesController, type: :controller do
     end
 
     context 'with valid params for associated flags' do
+      let!(:flags) { create_list(:flag, 3, feature: feature) }
       let!(:params) {{
         id: feature.id,
         feature: {
@@ -137,6 +137,7 @@ RSpec.describe FeaturesController, type: :controller do
     end
 
     context 'with invalid ids for associated flags' do
+      let!(:flags) { create_list(:flag, 3, feature: feature) }
 
       it 'does not create new flags if an id is omitted' do
         params = {
@@ -166,6 +167,20 @@ RSpec.describe FeaturesController, type: :controller do
           put :update, params: params
         }.to_not change{ unrelated_flag.reload.enabled }
       end
+
+      it 'does not update the associated release for any flag' do
+        params = {
+          id: feature.id,
+          feature: {
+            flags_attributes: [
+              { id: flags[0].id, release_id: create(:release).id },
+            ]
+          }
+        }
+        expect {
+          put :update, params: params
+        }.to_not change{ flags[0].reload.release }
+      end
     end
 
     context 'with invalid params' do
@@ -193,17 +208,38 @@ RSpec.describe FeaturesController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    let!(:feature) { create(:feature) }
+    let!(:flags) { create_list(:flag, 3, feature: feature) }
+    let!(:params) {{ id: feature.id }}
 
     it 'deletes the feature' do
-
+      expect {
+        delete :destroy, params: params
+      }.to change{ Feature.count }.by(-1)
     end
 
     it 'deletes the associated flag for every silo' do
+      expect {
+        delete :destroy, params: params
+      }.to change{ Flag.count }.by(-3)
+    end
 
+    it 'does not delete unrelated flags' do
+      unrelated_flag = create(:flag)
+      delete :destroy, params: params
+      expect { unrelated_flag.reload }.to_not raise_error
+    end
+
+    it 'does not delete any associated releases' do
+      expect {
+        delete :destroy, params: params
+      }.to_not change{ Release.count }
     end
 
     it 'returns a success response with no body' do
-
+      delete :destroy, params: params
+      expect(response.status).to eq(200)
+      expect(response.body).to be_blank
     end
   end
 end

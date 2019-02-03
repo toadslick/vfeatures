@@ -11,6 +11,10 @@ class ApplicationController < ActionController::API
     render json: { errors: record.errors.details }, status: 422
   end
 
+  def render_success
+    head :ok
+  end
+
   private
 
   def set_request_format

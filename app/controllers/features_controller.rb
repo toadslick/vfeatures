@@ -27,6 +27,8 @@ class FeaturesController < ApplicationController
   end
 
   def destroy
+    find_feature.destroy
+    render_success
   end
 
   private
@@ -42,7 +44,7 @@ class FeaturesController < ApplicationController
       .require(:feature)
       .permit(:key, {
         flags_attributes: [
-          :id, :enabled,
+          :id, :enabled
         ]
       })
   end

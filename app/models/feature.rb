@@ -1,6 +1,7 @@
 class Feature < ApplicationRecord
 
-  has_many :flags
+  has_many :flags, dependent: :destroy
+
   accepts_nested_attributes_for :flags,
     update_only: true,
     reject_if: :new_record?
