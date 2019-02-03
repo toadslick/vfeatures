@@ -62,12 +62,14 @@ RSpec.describe FeaturesController, type: :controller do
         expect {
           post :create, params: { feature: { key: '' }}
         }.to_not change{ Feature.count }
+        expect(response.status).to eq(422)
       end
 
       it 'does not create any flags' do
         expect {
           post :create, params: { feature: { key: '' }}
         }.to_not change{ Flag.count }
+        expect(response.status).to eq(422)
       end
 
       it 'returns a validation error if the feature key already exists, case insensitive' do
@@ -124,30 +126,26 @@ RSpec.describe FeaturesController, type: :controller do
           flags_attributes: [
             { id: flags[0].id, enabled: true },
             { id: flags[2].id, enabled: true },
-          ]
-        }
-      }}
+          ]} }}
 
       it 'updates the enabled state of any flags' do
         put :update, params: params
-        expect(flags[0].reload.enabled).to eq(true)
-        expect(flags[1].reload.enabled).to eq(false)
-        expect(flags[2].reload.enabled).to eq(true)
+        expect(flags[0].reload).to be_enabled
+        expect(flags[1].reload).to_not be_enabled
+        expect(flags[2].reload).to be_enabled
       end
     end
 
-    context 'with invalid ids for associated flags' do
+    context 'with invalid params for associated flags' do
       let!(:flags) { create_list(:flag, 3, feature: feature) }
 
       it 'does not create new flags if an id is omitted' do
         params = {
           id: feature.id,
           feature: {
-            flags_attributes: [
-              { enabled: true },
-            ]
-          }
-        }
+            flags_attributes: [{
+              enabled: true
+            }] }}
         expect {
           put :update, params: params
         }.to_not change{ Flag.count }
@@ -158,52 +156,82 @@ RSpec.describe FeaturesController, type: :controller do
         params = {
           id: feature.id,
           feature: {
-            flags_attributes: [
-              { id: unrelated_flag.id, enabled: true },
-            ]
-          }
-        }
+            flags_attributes: [{
+              id: unrelated_flag.id,
+              enabled: true
+            }] }}
         expect {
           put :update, params: params
-        }.to_not change{ unrelated_flag.reload.enabled }
+        }.to_not change{ unrelated_flag.reload.attributes }
       end
 
       it 'does not update the associated release for any flag' do
         params = {
           id: feature.id,
           feature: {
-            flags_attributes: [
-              { id: flags[0].id, release_id: create(:release).id },
-            ]
-          }
-        }
+            flags_attributes: [{
+              id: flags[0].id,
+              release_id: create(:release).id
+            }] }}
         expect {
           put :update, params: params
-        }.to_not change{ flags[0].reload.release }
+        }.to_not change{ flags[0].reload.attributes }
       end
     end
 
     context 'with invalid params' do
 
       it 'does not update the feature' do
-
+        params = {
+          id: feature.id,
+          feature: { key: '  ' }}
+        expect {
+          put :update, params: params
+        }.to_not change{ feature.reload.attributes }
+        expect(response.status).to eq(422)
       end
 
-      it 'does not update any flags' do
-
+      it 'does not update any associated flags' do
+        flag = create(:flag, { feature: feature })
+        params = {
+          id: feature.id,
+          feature: {
+            key: '  ',
+            flags_attributes: [{
+              id: flag.id,
+              enabled: true
+            }] }}
+        expect {
+          put :update, params: params
+        }.to_not change{ flag.reload.attributes }
+        expect(response.status).to eq(422)
       end
 
-      it 'returns a validation error if the feature key already exists' do
-
+      it 'returns a validation error if the feature key already exists, case insensitive' do
+        create(:feature, key: 'foo')
+        put :update, params: {
+          id: feature.id,
+          feature: { key: 'FOO' }}
+        expect(assigns(:feature)).to have_validation_error(:key, :taken)
+        expect(response.body).to match_json_schema(:errors)
       end
 
       it 'returns a validation error if the feature key contains any non-alphanumeric characters' do
-
+        put :update, params: {
+          id: feature.id,
+          feature: { key: ' f o o ' }}
+        expect(assigns(:feature)).to have_validation_error(:key, :invalid)
+        expect(response.body).to match_json_schema(:errors)
       end
 
       it 'returns a validation error if the feature key is blank' do
-
+        put :update, params: {
+          id: feature.id,
+          feature: { key: " \t \n " }}
+        expect(assigns(:feature)).to have_validation_error(:key, :blank)
+        expect(response.body).to match_json_schema(:errors)
       end
+
     end
   end
 
