@@ -122,5 +122,64 @@ RSpec.describe SilosController, type: :controller do
         expect(response.body).to match_json_schema(:silo)
       end
     end
+
+    context 'with invalid params' do
+
+      it 'does not update a silo' do
+        expect {
+          put :update, params: { id: silo.id, silo: { release_id: 666 }}
+        }.to_not change{ silo.reload.attributes }
+        expect(response.status).to eq(422)
+      end
+
+      it 'returns a validation error if the silo key already exists, case insensitive' do
+        create(:silo, key: 'foo')
+        put :update, params: { id: silo.id, silo: { key: ' FOO ' }}
+        expect(assigns(:silo)).to have_validation_error(:key, :taken)
+        expect(response.body).to match_json_schema(:errors)
+      end
+
+      it 'returns a validation error if the silo key contains invalid characters' do
+        put :update, params: { id: silo.id, silo: { key: '!@#$%' }}
+        expect(assigns(:silo)).to have_validation_error(:key, :invalid)
+        expect(response.body).to match_json_schema(:errors)
+      end
+
+      it 'returns a validation error if the silo key is blank' do
+        put :update, params: { id: silo.id, silo: { key: " \t \n " }}
+        expect(assigns(:silo)).to have_validation_error(:key, :blank)
+        expect(response.body).to match_json_schema(:errors)
+      end
+
+      it 'returns a validation error if the release_id does not belong to a release' do
+        put :update, params: { id: silo.id, silo: { release_id: 666 }}
+        expect(assigns(:silo)).to have_validation_error(:release, :blank)
+        expect(response.body).to match_json_schema(:errors)
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let!(:silo) { create(:silo) }
+    let!(:params) {{ id: silo.id }}
+
+    it 'deletes the silo' do
+      expect {
+        delete :destroy, params: params
+      }.to change{ Silo.count }.by(-1)
+      expect { silo.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it 'does not delete any associated releases' do
+      release = silo.release
+      delete :destroy, params: params
+      expect { release.reload }.to_not raise_error
+    end
+
+    it 'returns a success response with no body' do
+      delete :destroy, params: params
+      expect(response.status).to eq(200)
+      expect(response.body).to be_blank
+    end
   end
 end

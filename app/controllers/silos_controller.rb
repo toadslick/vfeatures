@@ -27,6 +27,8 @@ class SilosController < ApplicationController
   end
 
   def destroy
+    find_silo.destroy
+    head 200
   end
 
   private
