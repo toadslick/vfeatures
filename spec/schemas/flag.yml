@@ -1,0 +1,48 @@
+---
+type: object
+required:
+- id
+- created_at
+- updated_at
+- release
+- feature
+
+properties:
+  id:
+    $ref: '#/definitions/id'
+  created_at:
+    $ref: '#/definitions/datetime'
+  updated_at:
+    $ref: '#/definitions/datetime'
+  release:
+    $ref: '#/definitions/association'
+  feature:
+    $ref: '#/definitions/association'
+
+definitions:
+  id:
+    type: integer
+  string:
+    type: string
+  boolean:
+    type: boolean
+  datetime:
+    type: string
+    format: date-time
+
+  association:
+    type: object
+    required:
+    - id
+    - key
+    - created_at
+    - updated_at
+    properties:
+      id:
+        $ref: '#/definitions/id'
+      key:
+        $ref: '#/definitions/string'
+      created_at:
+        $ref: '#/definitions/datetime'
+      updated_at:
+        $ref: '#/definitions/datetime'
