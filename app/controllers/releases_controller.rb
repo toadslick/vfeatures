@@ -5,7 +5,6 @@ class ReleasesController < ApplicationController
   end
 
   def show
-    @release = find_release
   end
 
   def create
@@ -18,8 +17,8 @@ class ReleasesController < ApplicationController
   end
 
   def update
-    @release = find_release
-    if @release.update_attributes(params_for_update)
+    @release.assign_attributes(params_for_update)
+    if @release.save
       render 'show', status: 200
     else
       render_errors @release
@@ -27,7 +26,7 @@ class ReleasesController < ApplicationController
   end
 
   def destroy
-    find_release.destroy
+    @release.destroy
     head 200
   end
 
@@ -55,8 +54,8 @@ class ReleasesController < ApplicationController
 
   # Reduce the number of database queries by including all flags associated
   # with the release in a single query.
-  def find_release
-    Release
+  def find_record
+    @release = Release
       .includes(:flags)
       .find(params.require(:id))
   end
