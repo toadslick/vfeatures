@@ -12,6 +12,15 @@ class ApplicationController < ActionController::API
     render json: { errors: record.errors.details }, status: 422
   end
 
+  # Stub of a method for logging record transactions.
+  def log(method, record)
+    action = record.new_record? ? 'create' : 'update'
+    result = record.send(method)
+    action = record.destroyed? ? 'destroy' : action
+    p "LOG ACTION: #{action} #{record.class}"
+    result
+  end
+
   private
 
   # Force controllers to respond as if the request specified a JSON format.
