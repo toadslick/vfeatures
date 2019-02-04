@@ -5,7 +5,7 @@ class FlagsController < ApplicationController
 
   def update
     @flag.assign_attributes(allowed_params)
-    if log :save, @flag
+    if log @flag, &:save
       render 'show', status: 200
     else
       render_errors @flag

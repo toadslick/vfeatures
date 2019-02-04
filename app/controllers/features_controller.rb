@@ -9,7 +9,7 @@ class FeaturesController < ApplicationController
 
   def create
     @feature = Feature.build_with_flags(params_for_create)
-    if log :save, @feature
+    if log @feature, &:save
       render 'show', status: 201
     else
       render_errors @feature
@@ -18,7 +18,7 @@ class FeaturesController < ApplicationController
 
   def update
     @feature.assign_attributes(params_for_update)
-    if log :save, @feature
+    if log @feature, &:save
       render 'show', status: 200
     else
       render_errors @feature
@@ -26,7 +26,7 @@ class FeaturesController < ApplicationController
   end
 
   def destroy
-    log :destroy, @feature
+    log @feature, &:destroy
     head 200
   end
 

@@ -9,7 +9,7 @@ class ReleasesController < ApplicationController
 
   def create
     @release = Release.build_with_flags(params_for_create)
-    if log :save, @release
+    if log @release, &:save
       render 'show', status: 201
     else
       render_errors @release
@@ -18,7 +18,7 @@ class ReleasesController < ApplicationController
 
   def update
     @release.assign_attributes(params_for_update)
-    if log :save, @release
+    if log @release, &:save
       render 'show', status: 200
     else
       render_errors @release
@@ -26,7 +26,7 @@ class ReleasesController < ApplicationController
   end
 
   def destroy
-    log :destroy, @release
+    log @release, &:destroy
     head 200
   end
 

@@ -13,11 +13,11 @@ class ApplicationController < ActionController::API
   end
 
   # Stub of a method for logging record transactions.
-  def log(method, record)
+  def log(record)
     action = record.new_record? ? 'create' : 'update'
-    result = record.send(method)
+    result = yield record
     action = record.destroyed? ? 'destroy' : action
-    p "LOG ACTION: #{action} #{record.class}"
+    p "LOG: #{action} #{record.class}"
     result
   end
 
