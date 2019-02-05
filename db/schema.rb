@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_28_161301) do
+ActiveRecord::Schema.define(version: 2019_02_05_045510) do
+
+  create_table "changes", force: :cascade do |t|
+    t.string "action"
+    t.string "target_type"
+    t.integer "target_id"
+    t.json "diff"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["target_type", "target_id"], name: "index_changes_on_target_type_and_target_id"
+  end
 
   create_table "features", force: :cascade do |t|
     t.string "key"

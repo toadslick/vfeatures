@@ -1,6 +1,11 @@
 class Feature < ApplicationRecord
 
-  has_many :flags, dependent: :destroy
+  has_many :flags,
+    dependent: :destroy
+
+  has_many :logged_changes,
+    class_name: 'Changes',
+    as: :target
 
   accepts_nested_attributes_for :flags,
     update_only: true,

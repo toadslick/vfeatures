@@ -9,7 +9,7 @@ class SilosController < ApplicationController
 
   def create
     @silo = Silo.new(allowed_params)
-    if log @silo, &:save
+    if ChangeLogger.save @silo
       render 'show', status: 201
     else
       render_errors @silo
@@ -18,7 +18,7 @@ class SilosController < ApplicationController
 
   def update
     @silo.assign_attributes(allowed_params)
-    if log @silo, &:save
+    if ChangeLogger.save @silo
       render 'show', status: 200
     else
       render_errors @silo
@@ -26,7 +26,7 @@ class SilosController < ApplicationController
   end
 
   def destroy
-    log @silo, &:destroy
+    ChangeLogger.destroy @silo
     head 200
   end
 
