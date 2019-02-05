@@ -1,7 +1,13 @@
 class Release < ApplicationRecord
 
   has_many :silos
-  has_many :flags, dependent: :destroy
+
+  has_many :flags,
+    dependent: :destroy
+
+  has_many :logged_changes,
+    class_name: 'Change',
+    as: :target
 
   accepts_nested_attributes_for :flags,
     update_only: true,

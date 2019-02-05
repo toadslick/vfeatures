@@ -5,12 +5,11 @@ class SilosController < ApplicationController
   end
 
   def show
-    @silo = find_silo
   end
 
   def create
     @silo = Silo.new(allowed_params)
-    if @silo.save
+    if ChangeLogger.save @silo
       render 'show', status: 201
     else
       render_errors @silo
@@ -18,8 +17,8 @@ class SilosController < ApplicationController
   end
 
   def update
-    @silo = find_silo
-    if @silo.update_attributes(allowed_params)
+    @silo.assign_attributes(allowed_params)
+    if ChangeLogger.save @silo
       render 'show', status: 200
     else
       render_errors @silo
@@ -27,7 +26,7 @@ class SilosController < ApplicationController
   end
 
   def destroy
-    find_silo.destroy
+    ChangeLogger.destroy @silo
     head 200
   end
 
@@ -37,8 +36,8 @@ class SilosController < ApplicationController
     params.require(:silo).permit(:key, :release_id)
   end
 
-  def find_silo
-    Silo
+  def find_record
+    @silo = Silo
       .includes(:release)
       .find(params.require(:id))
   end

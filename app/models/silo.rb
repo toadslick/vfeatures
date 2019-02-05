@@ -2,6 +2,10 @@ class Silo < ApplicationRecord
 
   belongs_to :release
 
+  has_many :logged_changes,
+    class_name: 'Change',
+    as: :target
+
   validates :key,
     format: {
       with: /\A[a-z0-9]+\z/i,

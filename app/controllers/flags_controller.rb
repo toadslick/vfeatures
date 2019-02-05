@@ -1,12 +1,11 @@
 class FlagsController < ApplicationController
 
   def show
-    @flag = find_flag
   end
 
   def update
-    @flag = find_flag
-    if @flag.update_attributes(allowed_params)
+    @flag.assign_attributes(allowed_params)
+    if ChangeLogger.save @flag
       render 'show', status: 200
     else
       render_errors @flag
@@ -19,8 +18,8 @@ class FlagsController < ApplicationController
     params.require(:flag).permit(:enabled)
   end
 
-  def find_flag
-    Flag
+  def find_record
+    @flag = Flag
       .includes(:release, :feature)
       .find(params.require(:id))
   end

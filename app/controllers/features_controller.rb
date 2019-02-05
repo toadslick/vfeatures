@@ -5,12 +5,11 @@ class FeaturesController < ApplicationController
   end
 
   def show
-    @feature = find_feature
   end
 
   def create
     @feature = Feature.build_with_flags(params_for_create)
-    if @feature.save
+    if ChangeLogger.save @feature
       render 'show', status: 201
     else
       render_errors @feature
@@ -18,8 +17,8 @@ class FeaturesController < ApplicationController
   end
 
   def update
-    @feature = find_feature
-    if @feature.update_attributes(params_for_update)
+    @feature.assign_attributes(params_for_update)
+    if ChangeLogger.save @feature
       render 'show', status: 200
     else
       render_errors @feature
@@ -27,7 +26,7 @@ class FeaturesController < ApplicationController
   end
 
   def destroy
-    find_feature.destroy
+    ChangeLogger.destroy @feature
     head 200
   end
 
@@ -55,8 +54,8 @@ class FeaturesController < ApplicationController
 
   # Reduce the number of database queries by including all flags associated
   # with the feature in a single query.
-  def find_feature
-    Feature
+  def find_record
+    @feature = Feature
       .includes(:flags)
       .find(params.require(:id))
   end
