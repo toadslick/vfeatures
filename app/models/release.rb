@@ -9,10 +9,6 @@ class Release < ApplicationRecord
     class_name: 'Change',
     as: :target
 
-  accepts_nested_attributes_for :flags,
-    update_only: true,
-    reject_if: :new_record?
-
   validates :key,
     format: {
       with: /\A[a-z0-9_\.-]+\z/i,

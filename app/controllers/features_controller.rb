@@ -45,11 +45,7 @@ class FeaturesController < ApplicationController
   def params_for_update
     params
       .require(:feature)
-      .permit(:key, {
-        flags_attributes: [
-          :id, :enabled
-        ]
-      })
+      .permit(:key)
   end
 
   # Reduce the number of database queries by including all flags associated

@@ -121,68 +121,6 @@ RSpec.describe ReleasesController, type: :controller do
       end
     end
 
-    context 'with valid params for associated flags' do
-      let!(:flags) { create_list(:flag, 3, release: release) }
-      let!(:params) {{
-        id: release.id,
-        release: {
-          flags_attributes: [
-            { id: flags[0].id, enabled: true },
-            { id: flags[2].id, enabled: true },
-          ]} }}
-
-      it 'updates the enabled state of any flags' do
-        put :update, params: params
-        expect(flags[0].reload).to be_enabled
-        expect(flags[1].reload).to_not be_enabled
-        expect(flags[2].reload).to be_enabled
-      end
-    end
-
-    context 'with invalid params for associated flags' do
-      let!(:flags) { create_list(:flag, 3, release: release) }
-
-      it 'does not create new flags if an id is omitted' do
-        params = {
-          id: release.id,
-          release: {
-            flags_attributes: [{
-              enabled: true
-            }] }}
-        expect {
-          put :update, params: params
-        }.to_not change{ Flag.count }
-      end
-
-      it 'does not update flags that belong to a different release' do
-        unrelated_flag = create(:flag)
-        params = {
-          id: release.id,
-          release: {
-            flags_attributes: [{
-              id: unrelated_flag.id,
-              enabled: true
-            }] }}
-        expect {
-          put :update, params: params
-        }.to_not change{ unrelated_flag.reload.attributes }
-      end
-
-      it 'does not update the associated release or feature for any flag' do
-        params = {
-          id: release.id,
-          release: {
-            flags_attributes: [{
-              id: flags[0].id,
-              release_id: create(:release).id,
-              feature_id: create(:feature).id,
-            }] }}
-        expect {
-          put :update, params: params
-        }.to_not change{ flags[0].reload.attributes }
-      end
-    end
-
     context 'with invalid params' do
 
       it 'does not update the release' do
