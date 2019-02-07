@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(version: 2019_02_05_045510) do
 
   create_table "changes", force: :cascade do |t|
     t.string "action"
+    t.string "target_key"
     t.string "target_type"
     t.integer "target_id"
     t.json "diff"

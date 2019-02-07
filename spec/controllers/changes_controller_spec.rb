@@ -22,28 +22,28 @@ RSpec.describe ChangesController, type: :controller do
 
     end
 
-    it 'with valid page param' do
+    context 'with valid page param' do
 
       it 'returns the given page of records' do
 
       end
     end
 
-    it 'with invalid page params' do
+    context 'with invalid page params' do
 
       it 'returns the first page of records' do
 
       end
     end
 
-    it 'with valid target_type and target_id params' do
+    context 'with valid target_type and target_id params' do
 
       it 'returns only changes associated with the target record' do
 
       end
     end
 
-    it 'with invalid target_type or target_id params' do
+    context 'with invalid target_type or target_id params' do
 
       it 'returns an empty set' do
 
@@ -51,7 +51,7 @@ RSpec.describe ChangesController, type: :controller do
     end
 
     it 'returns the expected records when all params are combined' do
-      
+
     end
   end
 end

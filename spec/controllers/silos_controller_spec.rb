@@ -236,6 +236,7 @@ RSpec.describe SilosController, type: :controller do
       expect(change.action).to eq('destroy')
       expect(change.target_id).to eq(silo.id)
       expect(change.target_type).to eq('Silo')
+      expect(change.target_key).to eq(silo.key)
     end
   end
 end

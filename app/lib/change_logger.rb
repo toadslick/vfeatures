@@ -20,6 +20,7 @@ class ChangeLogger
 	def self.log_transaction(record, action)
 		change = Change.new({
 			target: record,
+			target_key: record.key,
 			action: action,
 			diff: record.changes,
 		})

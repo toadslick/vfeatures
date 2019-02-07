@@ -7,4 +7,7 @@ class Flag < ApplicationRecord
     class_name: 'Change',
     as: :target
 
+  def key
+    "#{release.key}/#{feature.key}"
+  end
 end

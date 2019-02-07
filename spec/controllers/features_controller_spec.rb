@@ -265,6 +265,7 @@ RSpec.describe FeaturesController, type: :controller do
       expect(change.action).to eq('destroy')
       expect(change.target_id).to eq(feature.id)
       expect(change.target_type).to eq('Feature')
+      expect(change.target_key).to eq(feature.key)
     end
   end
 end
