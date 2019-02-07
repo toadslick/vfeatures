@@ -53,6 +53,16 @@ RSpec.describe SilosController, type: :controller do
         expect(response.status).to eq(201)
         expect(response.body).to match_json_schema(:silo)
       end
+
+      it 'creates the expected Change record' do
+        expect {
+          post :create, params: params
+        }.to change{ Change.count }.by(1)
+        change = Change.latest
+        expect(change.action).to eq('create')
+        expect(change.target).to eq(assigns(:silo))
+        expect(change.diff.keys).to include('key')
+      end
     end
 
     context 'with invalid params' do
@@ -88,6 +98,12 @@ RSpec.describe SilosController, type: :controller do
         expect(assigns(:silo)).to have_validation_error(:release, :blank)
         expect(response.body).to match_json_schema(:errors)
       end
+
+      it 'does not create a Change record' do
+        expect {
+          post :create, params: { silo: { key: " \t \n " }}
+        }.to_not change{ Change.count }
+      end
     end
   end
 
@@ -120,6 +136,18 @@ RSpec.describe SilosController, type: :controller do
         expect(assigns(:silo)).to eq(silo)
         expect(response.status).to eq(200)
         expect(response.body).to match_json_schema(:silo)
+      end
+
+      it 'creates the expected Change record' do
+        expect {
+          put :update, params: {
+            id: silo.id,
+            silo: { key: 'foo' }}
+        }.to change{ Change.count }.by(1)
+        change = Change.latest
+        expect(change.action).to eq('update')
+        expect(change.target).to eq(silo)
+        expect(change.diff.keys).to include('key')
       end
     end
 
@@ -156,6 +184,12 @@ RSpec.describe SilosController, type: :controller do
         expect(assigns(:silo)).to have_validation_error(:release, :blank)
         expect(response.body).to match_json_schema(:errors)
       end
+
+      it 'does not create a Change record' do
+        expect {
+          put :update, params: { id: silo.id, silo: { release_id: 666 }}
+        }.to_not change{ Change.count }
+      end
     end
   end
 
@@ -180,6 +214,16 @@ RSpec.describe SilosController, type: :controller do
       delete :destroy, params: params
       expect(response.status).to eq(200)
       expect(response.body).to be_blank
+    end
+
+    it 'creates the expected Change record' do
+      expect {
+        delete :destroy, params: params
+      }.to change{ Change.count }.by(1)
+      change = Change.latest
+      expect(change.action).to eq('destroy')
+      expect(change.target_id).to eq(silo.id)
+      expect(change.target_type).to eq('Silo')
     end
   end
 end

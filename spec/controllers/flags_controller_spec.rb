@@ -32,6 +32,16 @@ RSpec.describe FlagsController, type: :controller do
         expect(response.status).to eq(200)
         expect(response.body).to match_json_schema(:flag)
       end
+
+      it 'creates the expected Change record' do
+        expect {
+          put :update, params: params
+        }.to change{ Change.count }.by(1)
+        change = Change.latest
+        expect(change.action).to eq('update')
+        expect(change.target).to eq(flag)
+        expect(change.diff.keys).to include('enabled')
+      end
     end
 
     context 'with unpermitted params' do

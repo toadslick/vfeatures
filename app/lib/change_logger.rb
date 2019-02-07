@@ -17,9 +17,11 @@ class ChangeLogger
 			action: action,
 			diff: record.changes,
 		})
-		Change.transaction do
+		ActiveRecord::Base.transaction do
 			change.save
-			yield record
+			result = yield record
+			raise ActiveRecord::Rollback unless result
+			result
 		end
 	end
 end
