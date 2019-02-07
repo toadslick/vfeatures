@@ -1,7 +1,7 @@
 class FeaturesController < ApplicationController
 
   def index
-    @features = Feature.all
+    @features = Feature.alphabetically
   end
 
   def show

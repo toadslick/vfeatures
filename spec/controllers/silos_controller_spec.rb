@@ -3,7 +3,11 @@ require 'rails_helper'
 RSpec.describe SilosController, type: :controller do
 
   describe 'GET #index' do
-    let!(:silos) { create_list(:silo, 3) }
+    let!(:silos) { [
+      create(:silo, key: 'bbb'),
+      create(:silo, key: 'ccc'),
+      create(:silo, key: 'aaa'),
+    ] }
 
     it 'returns a list of every silo' do
       get :index
@@ -11,6 +15,14 @@ RSpec.describe SilosController, type: :controller do
       expect(response.status).to eq(200)
       expect(response.body).to match_json_schema(:silos)
       expect(json.length).to eq(3)
+    end
+
+    it 'returns silos ordered by key alphabetically' do
+      get :index
+      json = JSON.parse(response.body)
+      expect(json[0]['key']).to eq('aaa')
+      expect(json[1]['key']).to eq('bbb')
+      expect(json[2]['key']).to eq('ccc')
     end
   end
 

@@ -7,6 +7,10 @@ class ApplicationRecord < ActiveRecord::Base
     order(created_at: :desc)
   end
 
+  scope :alphabetically, -> do
+    order(key: :asc)
+  end
+
   scope :page, -> (page_index, per_page) do
     limit(per_page).offset(page_index * per_page)
   end

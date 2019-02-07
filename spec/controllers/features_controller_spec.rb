@@ -3,7 +3,11 @@ require 'rails_helper'
 RSpec.describe FeaturesController, type: :controller do
 
   describe 'GET #index' do
-    let!(:features) { create_list(:feature, 3) }
+    let!(:features) { [
+      create(:feature, key: 'bbb'),
+      create(:feature, key: 'ccc'),
+      create(:feature, key: 'aaa'),
+    ] }
 
     it 'returns a list of every feature' do
       get :index
@@ -11,6 +15,14 @@ RSpec.describe FeaturesController, type: :controller do
       expect(response.status).to eq(200)
       expect(response.body).to match_json_schema(:features)
       expect(json.length).to eq(3)
+    end
+
+    it 'returns features ordered by key alphabetically' do
+      get :index
+      json = JSON.parse(response.body)
+      expect(json[0]['key']).to eq('aaa')
+      expect(json[1]['key']).to eq('bbb')
+      expect(json[2]['key']).to eq('ccc')
     end
   end
 

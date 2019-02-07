@@ -1,7 +1,7 @@
 class SilosController < ApplicationController
 
   def index
-    @silos = Silo.all
+    @silos = Silo.alphabetically
   end
 
   def show
