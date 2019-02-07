@@ -3,18 +3,12 @@ type: object
 required:
 - id
 - key
-- created_at
-- updated_at
 - flags
 properties:
   id:
     $ref: '#/definitions/id'
   key:
     $ref: '#/definitions/string'
-  created_at:
-    $ref: '#/definitions/datetime'
-  updated_at:
-    $ref: '#/definitions/datetime'
   flags:
     $ref: '#/definitions/flags'
 
@@ -37,17 +31,11 @@ definitions:
       required:
       - id
       - enabled
-      - created_at
-      - updated_at
       - release_id
       properties:
         id:
           $ref: '#/definitions/id'
         enabled:
           $ref: '#/definitions/boolean'
-        created_at:
-          $ref: '#/definitions/datetime'
-        updated_at:
-          $ref: '#/definitions/datetime'
         release_id:
           $ref: '#/definitions/id'

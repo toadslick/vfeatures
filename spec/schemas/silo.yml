@@ -3,18 +3,12 @@ type: object
 required:
 - id
 - key
-- created_at
-- updated_at
 - release
 properties:
   id:
     $ref: '#/definitions/id'
   key:
     $ref: '#/definitions/string'
-  created_at:
-    $ref: '#/definitions/datetime'
-  updated_at:
-    $ref: '#/definitions/datetime'
   release:
     $ref: '#/definitions/release'
 
@@ -25,23 +19,14 @@ definitions:
     type: string
   boolean:
     type: boolean
-  datetime:
-    type: string
-    format: date-time
 
   release:
     type: object
     required:
     - id
     - key
-    - created_at
-    - updated_at
     properties:
       id:
         $ref: '#/definitions/id'
       key:
         $ref: '#/definitions/string'
-      created_at:
-        $ref: '#/definitions/datetime'
-      updated_at:
-        $ref: '#/definitions/datetime'

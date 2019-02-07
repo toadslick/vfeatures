@@ -6,16 +6,8 @@ items:
   required:
   - id
   - key
-  - created_at
-  - updated_at
   properties:
     id:
       type: integer
     key:
       type: string
-    created_at:
-      type: string
-      format: date-time
-    updated_at:
-      type: string
-      format: date-time
