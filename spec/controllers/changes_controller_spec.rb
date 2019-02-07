@@ -4,7 +4,7 @@ RSpec.describe ChangesController, type: :controller do
 
   describe "GET #index" do
     before do
-      allow(subject).to receive(:page_size) { 3 }
+      allow(subject).to receive(:records_per_page) { 3 }
     end
 
     context 'with multiple pages of Change records' do
