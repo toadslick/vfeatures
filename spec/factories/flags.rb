@@ -4,5 +4,4 @@ FactoryBot.define do
     feature
     release
   end
-
 end

@@ -4,5 +4,4 @@ FactoryBot.define do
     release
     sequence(:key) { |n| "silo#{n}" }
   end
-
 end

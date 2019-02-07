@@ -1,7 +1,14 @@
 class Change < ApplicationRecord
+  ACTIONS = %w( create update destroy )
+
   belongs_to :target, polymorphic: true
 
-  def self.latest
-    order(:created_at).limit(1).first
-  end
+  validates :action,
+    inclusion: {
+      in: ACTIONS
+    }
+
+  validates :target,
+    presence: true
+
 end

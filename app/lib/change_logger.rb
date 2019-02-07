@@ -11,6 +11,12 @@ class ChangeLogger
 
 	private
 
+	# Perform the database operation on the given record,
+	# and also create a new Change record.
+	#
+	# Throw a Rollback exception if the operation on the record
+	# returns a falsy value. This will undo the Change record if,
+	# for example, the operation fails validation.
 	def self.log_transaction(record, action)
 		change = Change.new({
 			target: record,

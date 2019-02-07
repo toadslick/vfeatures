@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   resources :features , only: [:index, :show, :create, :update, :destroy]
   resources :releases , only: [:index, :show, :create, :update, :destroy]
   resources :flags    , only: [:show, :update]
+  resources :changes  , only: [:index]
 end

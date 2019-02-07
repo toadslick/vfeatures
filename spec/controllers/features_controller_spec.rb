@@ -61,7 +61,7 @@ RSpec.describe FeaturesController, type: :controller do
         expect {
           post :create, params: params
         }.to change{ Change.count }.by(1)
-        change = Change.latest
+        change = Change.latest_record
         expect(change.action).to eq('create')
         expect(change.target).to eq(assigns(:feature))
         expect(change.diff.keys).to include('key')
@@ -140,7 +140,7 @@ RSpec.describe FeaturesController, type: :controller do
         expect {
           put :update, params: params
         }.to change{ Change.count }.by(1)
-        change = Change.latest
+        change = Change.latest_record
         expect(change.action).to eq('update')
         expect(change.target).to eq(feature)
         expect(change.diff.keys).to include('key')
@@ -249,7 +249,7 @@ RSpec.describe FeaturesController, type: :controller do
       expect {
         delete :destroy, params: params
       }.to change{ Change.count }.by(1)
-      change = Change.latest
+      change = Change.latest_record
       expect(change.action).to eq('destroy')
       expect(change.target_id).to eq(feature.id)
       expect(change.target_type).to eq('Feature')

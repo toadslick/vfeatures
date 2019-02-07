@@ -37,7 +37,7 @@ RSpec.describe FlagsController, type: :controller do
         expect {
           put :update, params: params
         }.to change{ Change.count }.by(1)
-        change = Change.latest
+        change = Change.latest_record
         expect(change.action).to eq('update')
         expect(change.target).to eq(flag)
         expect(change.diff.keys).to include('enabled')
