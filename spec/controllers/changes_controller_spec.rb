@@ -9,11 +9,11 @@ RSpec.describe ChangesController, type: :controller do
 
     context 'with multiple pages of Change records' do
       let!(:changes) {[
-        create(:change, created_at: 3.days.ago),
-        create(:change, created_at: 5.days.ago),
-        create(:change, created_at: 2.days.ago),
-        create(:change, created_at: 7.days.ago),
-        create(:change, created_at: 4.days.ago),
+        Timecop.freeze(3.days.ago) { create(:change) },
+        Timecop.freeze(5.days.ago) { create(:change) },
+        Timecop.freeze(2.days.ago) { create(:change) },
+        Timecop.freeze(7.days.ago) { create(:change) },
+        Timecop.freeze(4.days.ago) { create(:change) },
       ]}
 
       it 'returns a list of changes' do
@@ -47,7 +47,7 @@ RSpec.describe ChangesController, type: :controller do
         let!(:params) {{ page: 1 }}
 
         it 'returns the given page of Change records' do
-          get :index, params
+          get :index, params: params
           expect(assigns(:changes).length).to eq(2)
           expect(assigns(:changes)[0]).to eq(changes[1])
           expect(assigns(:changes)[1]).to eq(changes[3])
@@ -58,7 +58,7 @@ RSpec.describe ChangesController, type: :controller do
         let!(:params) {{ page: 'foo' }}
 
         it 'returns the first page of Change records' do
-          get :index, params
+          get :index, params: params
           expect(assigns(:changes)[0]).to eq(changes[2])
           expect(assigns(:changes)[1]).to eq(changes[0])
           expect(assigns(:changes)[2]).to eq(changes[4])
@@ -80,7 +80,7 @@ RSpec.describe ChangesController, type: :controller do
       }}
 
       it 'returns a page of Change records belonging to the target record' do
-        get :index, params
+        get :index, params: params
         expect(assigns(:changes).length).to eq(2)
         expect(assigns(:changes)).to include(changes[1])
         expect(assigns(:changes)).to include(changes[2])
@@ -95,28 +95,68 @@ RSpec.describe ChangesController, type: :controller do
       }}
 
       it 'returns an empty set' do
-        get :index, params
+        get :index, params: params
         expect(assigns(:changes)).to be_empty
       end
     end
 
     context 'with valid target_key param' do
+      let!(:feature) { create(:feature) }
+      let!(:changes) {[
+        create(:change),
+        create(:change, target_key: feature.key),
+        create(:change),
+        create(:change, target_key: feature.key),
+        create(:change, target_key: feature.key),
+      ]}
+      let!(:params) {{
+        target_key: feature.key,
+      }}
 
       it 'returns a page of Change records with the given target_key' do
-
+        get :index, params: params
+        expect(assigns(:changes).length).to eq(3)
+        expect(assigns(:changes)).to include(changes[1])
+        expect(assigns(:changes)).to include(changes[3])
+        expect(assigns(:changes)).to include(changes[4])
       end
     end
 
     context 'with invalid target_key param' do
+      let!(:changes) { create_list(:change, 2) }
+      let!(:params) {{
+        target_key: 'not a thing',
+      }}
 
       it 'returns an empty set' do
-
+        get :index, params: params
+        expect(assigns(:changes)).to be_empty
       end
     end
 
+    context 'when all params are combined' do
+      let!(:release) { create(:release) }
+      let!(:changes) {[
+        *Timecop.freeze(1.days.ago) { create_list(:change, 3, target: release) },
+        *Timecop.freeze(7.days.ago) { create_list(:change, 3, target: release, target_key: release.key) },
+        *Timecop.freeze(2.days.ago) { create_list(:change, 3, target: release, target_key: release.key) },
+        *Timecop.freeze(3.days.ago) { create_list(:change, 3, target: release, target_key: release.key) },
+        *Timecop.freeze(4.days.ago) { create_list(:change, 3, target: release, target_key: release.key) },
+      ]}
+      let!(:params) {{
+        page: 1,
+        target_id: release.id,
+        target_type: 'Release',
+        target_key: release.key,
+      }}
 
-    it 'returns the expected records when all params are combined' do
-
+      it 'returns the expected page of records' do
+        get :index, params: params
+        expect(assigns(:changes).length).to eq(3)
+        expect(assigns(:changes)).to include(changes[9])
+        expect(assigns(:changes)).to include(changes[10])
+        expect(assigns(:changes)).to include(changes[11])
+      end
     end
   end
 end

@@ -37,6 +37,7 @@ group :development, :test do
   gem 'json-schema'
   gem 'json-schema-rspec'
   gem 'rails-controller-testing'
+  gem 'timecop'
 end
 
 group :development do
