@@ -1,0 +1,70 @@
+---
+type: object
+additionalProperties: false
+required:
+  - pagination
+  - changes
+properties:
+  pagination:
+    $ref: '#/definitions/pagination'
+  changes:
+    $ref: '#/definitions/changes'
+
+definitions:
+  id:
+    type: integer
+  string:
+    type: string
+  number:
+    type: integer
+
+  pagination:
+    type: object
+    additionalProperties: false
+    required:
+      - total
+      - offset
+    properties:
+      total:
+        $ref: '#/definitions/number'
+      offset:
+        $ref: '#/definitions/number'
+
+  changes:
+    type: array
+    uniqueItems: true
+    items:
+      type: object
+      additionalProperties: false
+      required:
+      - id
+      - action
+      - target_type
+      - target_id
+      - target_key
+      - diff
+      properties:
+        id:
+          $ref: '#/definitions/id'
+        action:
+          $ref: '#/definitions/string'
+        target_type:
+          $ref: '#/definitions/string'
+        target_id:
+          $ref: '#/definitions/id'
+        target_key:
+          $ref: '#/definitions/string'
+        diff:
+          $ref: '#/definitions/diff'
+
+  diff:
+    type: object
+    additionalProperties: false
+    patternProperties:
+      '^[a-z0-9_]+$':
+        type: array
+        minLength: 2
+        items:
+          type:
+          - string
+          - null

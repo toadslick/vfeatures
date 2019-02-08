@@ -24,15 +24,15 @@ RSpec.describe ChangesController, type: :controller do
 
       it 'returns the total count of matching results' do
         get :index
-        json = JSON.parse(response.body)
-        expect(json[:total]).to eq(5)
-        expect(assigns[:count]).to eq(5)
+        json = JSON.parse(response.body)['pagination']
+        expect(json['total']).to eq(5)
+        expect(json['offset']).to eq(0)
       end
 
       it 'returns a single page of Change records' do
         get :index
-        json = JSON.parse(response.body)
-        expect(json[:changes].length).to eq(3)
+        json = JSON.parse(response.body)['changes']
+        expect(json.length).to eq(3)
         expect(assigns(:changes).length).to eq(3)
       end
 
@@ -51,6 +51,13 @@ RSpec.describe ChangesController, type: :controller do
           expect(assigns(:changes).length).to eq(2)
           expect(assigns(:changes)[0]).to eq(changes[1])
           expect(assigns(:changes)[1]).to eq(changes[3])
+        end
+
+        it 'returns the expected pagination info' do
+          get :index, params: params
+          json = JSON.parse(response.body)['pagination']
+          expect(json['total']).to eq(5)
+          expect(json['offset']).to eq(3)
         end
       end
 
@@ -154,7 +161,7 @@ RSpec.describe ChangesController, type: :controller do
       it 'returns the expected page of records' do
         get :index, params: params
         expect(assigns(:changes).length).to eq(3)
-        expect(assigns(:total)).to eq(12)
+        expect(assigns(:pagination).total).to eq(12)
         expect(assigns(:changes)).to include(changes[9])
         expect(assigns(:changes)).to include(changes[10])
         expect(assigns(:changes)).to include(changes[11])

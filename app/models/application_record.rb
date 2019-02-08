@@ -11,11 +11,7 @@ class ApplicationRecord < ActiveRecord::Base
     order(key: :asc)
   end
 
-  scope :page, -> (page_index, records_per_page) do
-    limit(records_per_page).offset(page_index * records_per_page)
-  end
-
   def self.latest_record
-    latest.limit(1).first
+    latest.limit(1).take
   end
 end
