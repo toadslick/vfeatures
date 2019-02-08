@@ -1,5 +1,6 @@
 ---
 type: object
+additionalProperties: false
 required:
 - id
 - key
@@ -22,6 +23,7 @@ definitions:
 
   release:
     type: object
+    additionalProperties: false
     required:
     - id
     - key

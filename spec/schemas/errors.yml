@@ -3,17 +3,25 @@ required:
 - errors
 properties:
   errors:
+    $ref: '#/definitions/errors'
+
+definitions:
+  errors:
+    type: object
     additionalProperties: false
     patternProperties:
       '^[a-z0-9_]+$':
         type: array
         minLength: 1
         items:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              type: string
-            value:
-              type: string
+          $ref: '#/definitions/error'
+
+  error:
+    type: object
+    required:
+    - error
+    properties:
+     error:
+       type: string
+     value:
+       type: string

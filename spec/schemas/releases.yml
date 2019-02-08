@@ -3,6 +3,7 @@ type: array
 uniqueItems: true
 items:
   type: object
+  additionalProperties: false
   required:
   - id
   - key

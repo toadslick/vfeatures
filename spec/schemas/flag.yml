@@ -1,5 +1,6 @@
 ---
 type: object
+additionalProperties: false
 required:
 - id
 - release
@@ -23,6 +24,7 @@ definitions:
 
   association:
     type: object
+    additionalProperties: false
     required:
     - id
     - key

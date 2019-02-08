@@ -137,11 +137,12 @@ RSpec.describe ChangesController, type: :controller do
     context 'when all params are combined' do
       let!(:release) { create(:release) }
       let!(:changes) {[
-        *Timecop.freeze(1.days.ago) { create_list(:change, 3, target: release) },
+        *Timecop.freeze(1.days.ago) { create_list(:change, 3, target: release, target_key: 'foo'      ) },
         *Timecop.freeze(7.days.ago) { create_list(:change, 3, target: release, target_key: release.key) },
         *Timecop.freeze(2.days.ago) { create_list(:change, 3, target: release, target_key: release.key) },
         *Timecop.freeze(3.days.ago) { create_list(:change, 3, target: release, target_key: release.key) },
         *Timecop.freeze(4.days.ago) { create_list(:change, 3, target: release, target_key: release.key) },
+        *Timecop.freeze(2.days.ago) { create_list(:change, 3,                  target_key: release.key) },
       ]}
       let!(:params) {{
         page: 1,
@@ -153,6 +154,7 @@ RSpec.describe ChangesController, type: :controller do
       it 'returns the expected page of records' do
         get :index, params: params
         expect(assigns(:changes).length).to eq(3)
+        expect(assigns(:total)).to eq(12)
         expect(assigns(:changes)).to include(changes[9])
         expect(assigns(:changes)).to include(changes[10])
         expect(assigns(:changes)).to include(changes[11])

@@ -1,4 +1,4 @@
-json.(@feature, :id, :key, :created_at, :updated_at)
+json.(@feature, :id, :key)
 
 json.flags @feature.flags do |flag|
   json.(flag, :id, :enabled, :release_id)

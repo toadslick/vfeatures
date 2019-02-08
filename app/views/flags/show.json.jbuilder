@@ -1,4 +1,4 @@
-json.(@flag, :id, :created_at, :updated_at)
+json.(@flag, :id)
 
 json.release @flag.release, :id, :key
 

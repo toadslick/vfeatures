@@ -1,5 +1,6 @@
 ---
 type: object
+additionalProperties: false
 required:
 - id
 - key
@@ -28,6 +29,7 @@ definitions:
     uniqueItems: true
     items:
       type: object
+      additionalProperties: false
       required:
       - id
       - enabled
