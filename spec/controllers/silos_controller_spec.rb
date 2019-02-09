@@ -41,6 +41,8 @@ RSpec.describe SilosController, type: :controller do
   end
 
   describe 'POST #create' do
+    let!(:user) { create(:user) }
+    before { auth_headers(user) }
     let!(:release) { create(:release) }
 
     context 'with valid params' do
@@ -120,6 +122,8 @@ RSpec.describe SilosController, type: :controller do
   end
 
   describe 'PUT #update' do
+    let!(:user) { create(:user) }
+    before { auth_headers(user) }
     let!(:silo) { create(:silo) }
 
     context 'with valid params' do
@@ -206,6 +210,8 @@ RSpec.describe SilosController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    let!(:user) { create(:user) }
+    before { auth_headers(user) }
     let!(:silo) { create(:silo) }
     let!(:params) {{ id: silo.id }}
 

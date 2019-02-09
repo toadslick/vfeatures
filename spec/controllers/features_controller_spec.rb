@@ -128,6 +128,8 @@ RSpec.describe FeaturesController, type: :controller do
   end
 
   describe 'PUT #update' do
+    let!(:user) { create(:user) }
+    before { auth_headers(user) }
     let!(:feature) { create(:feature) }
 
     context 'with valid params' do
@@ -226,6 +228,8 @@ RSpec.describe FeaturesController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    let!(:user) { create(:user) }
+    before { auth_headers(user) }
     let!(:feature) { create(:feature) }
     let!(:params) {{ id: feature.id }}
 

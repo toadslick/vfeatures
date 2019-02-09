@@ -15,6 +15,8 @@ RSpec.describe FlagsController, type: :controller do
   end
 
   describe 'PUT #update' do
+    let!(:user) { create(:user) }
+    before { auth_headers(user) }
     let!(:flag) { create(:flag) }
 
     context 'with valid params' do

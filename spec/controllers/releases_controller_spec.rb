@@ -29,6 +29,9 @@ RSpec.describe ReleasesController, type: :controller do
   end
 
   describe 'POST #create' do
+    let!(:user) { create(:user) }
+    before { auth_headers(user) }
+
     context 'with valid params' do
       let!(:params) {{ release: { key: "  \n release-4.20 \t " }}}
 
@@ -113,6 +116,8 @@ RSpec.describe ReleasesController, type: :controller do
   end
 
   describe 'PUT #update' do
+    let!(:user) { create(:user) }
+    before { auth_headers(user) }
     let!(:release) { create(:release) }
 
     context 'with valid params' do
@@ -211,6 +216,9 @@ RSpec.describe ReleasesController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
+    let!(:user) { create(:user) }
+    before { auth_headers(user) }
+
     let!(:release) { create(:release) }
     let!(:params) {{ id: release.id }}
 
