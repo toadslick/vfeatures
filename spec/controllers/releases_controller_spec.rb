@@ -68,6 +68,7 @@ RSpec.describe ReleasesController, type: :controller do
         expect(change.action).to eq('create')
         expect(change.target).to eq(assigns(:release))
         expect(change.diff.keys).to include('key')
+        expect(change.user).to eq(user)
       end
     end
 
@@ -149,6 +150,7 @@ RSpec.describe ReleasesController, type: :controller do
         expect(change.action).to eq('update')
         expect(change.target).to eq(release)
         expect(change.diff.keys).to include('key')
+        expect(change.user).to eq(user)
       end
     end
 
@@ -262,6 +264,7 @@ RSpec.describe ReleasesController, type: :controller do
       expect(change.target_id).to eq(release.id)
       expect(change.target_type).to eq('Release')
       expect(change.target_key).to eq(release.key)
+      expect(change.user).to eq(user)
     end
   end
 end

@@ -44,6 +44,7 @@ RSpec.describe FlagsController, type: :controller do
         expect(change.target).to eq(flag)
         expect(change.diff.keys).to include('enabled')
         expect(change.target_key).to eq("#{flag.release.key}/#{flag.feature.key}")
+        expect(change.user).to eq(user)
       end
     end
 

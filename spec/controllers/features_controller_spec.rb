@@ -80,6 +80,7 @@ RSpec.describe FeaturesController, type: :controller do
         expect(change.action).to eq('create')
         expect(change.target).to eq(assigns(:feature))
         expect(change.diff.keys).to include('key')
+        expect(change.user).to eq(user)
       end
     end
 
@@ -161,6 +162,7 @@ RSpec.describe FeaturesController, type: :controller do
         expect(change.action).to eq('update')
         expect(change.target).to eq(feature)
         expect(change.diff.keys).to include('key')
+        expect(change.user).to eq(user)
       end
     end
 
@@ -273,6 +275,7 @@ RSpec.describe FeaturesController, type: :controller do
       expect(change.target_id).to eq(feature.id)
       expect(change.target_type).to eq('Feature')
       expect(change.target_key).to eq(feature.key)
+      expect(change.user).to eq(user)
     end
   end
 end
