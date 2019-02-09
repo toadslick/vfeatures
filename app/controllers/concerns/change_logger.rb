@@ -1,10 +1,6 @@
 module ChangeLogger
 	extend ActiveSupport::Concern
 
-	included do
-		before_action :authenticate_user!
-	end
-
 	def log_and_save(record)
 		action = record.new_record? ? 'create' : 'update'
 		log_transaction record, action, &:save

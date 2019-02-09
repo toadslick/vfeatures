@@ -1,12 +1,14 @@
 class ReleasesController < ApplicationController
   include ChangeLogger
 
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
+  before_action :find_record, only: [:show, :update, :destroy]
+
   def index
     @releases = Release.all
   end
 
   def show
-    find_record
   end
 
   def create
@@ -19,7 +21,6 @@ class ReleasesController < ApplicationController
   end
 
   def update
-    find_record
     @release.assign_attributes(params_for_update)
     if log_and_save @release
       render 'show', status: 200
@@ -29,7 +30,6 @@ class ReleasesController < ApplicationController
   end
 
   def destroy
-    find_record
     log_and_destroy @release
     head 200
   end

@@ -1,12 +1,14 @@
 class FeaturesController < ApplicationController
   include ChangeLogger
 
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
+  before_action :find_record, only: [:show, :update, :destroy]
+
   def index
     @features = Feature.alphabetically
   end
 
   def show
-    find_record
   end
 
   def create
@@ -19,7 +21,6 @@ class FeaturesController < ApplicationController
   end
 
   def update
-    find_record
     @feature.assign_attributes(params_for_update)
     if log_and_save @feature
       render 'show', status: 200
@@ -29,7 +30,6 @@ class FeaturesController < ApplicationController
   end
 
   def destroy
-    find_record
     log_and_destroy @feature
     head 200
   end

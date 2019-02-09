@@ -1,12 +1,14 @@
 class SilosController < ApplicationController
   include ChangeLogger
 
+  before_action :authenticate_user!, only: [:create, :update, :destroy]
+  before_action :find_record, only: [:show, :update, :destroy]
+
   def index
     @silos = Silo.alphabetically
   end
 
   def show
-    find_record
   end
 
   def create
@@ -19,7 +21,6 @@ class SilosController < ApplicationController
   end
 
   def update
-    find_record
     @silo.assign_attributes(allowed_params)
     if log_and_save @silo
       render 'show', status: 200
@@ -29,7 +30,6 @@ class SilosController < ApplicationController
   end
 
   def destroy
-    find_record
     log_and_destroy @silo
     head 200
   end

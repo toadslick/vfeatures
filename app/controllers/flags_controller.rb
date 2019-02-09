@@ -1,12 +1,13 @@
 class FlagsController < ApplicationController
   include ChangeLogger
 
+  before_action :authenticate_user!, only: [:update]
+  before_action :find_record, only: [:show, :update]
+
   def show
-    find_record
   end
 
   def update
-    find_record
     @flag.assign_attributes(allowed_params)
     if log_and_save @flag
       render 'show', status: 200
