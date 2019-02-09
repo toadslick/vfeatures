@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::API
   before_action :set_request_format
-  before_action :find_record, only: [:show, :update, :destroy]
 
   rescue_from ActiveRecord::RecordNotFound do |exception|
     render json: exception, status: 404

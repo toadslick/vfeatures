@@ -5,6 +5,7 @@ class CreateChanges < ActiveRecord::Migration[5.2]
       t.string :target_key
       t.references :target, polymorphic: true
       t.json :diff
+      t.belongs_to :user
 
       t.timestamps
     end

@@ -5,4 +5,8 @@ class User < ApplicationRecord
     :jwt_authenticatable,
     jwt_revocation_strategy: self
 
+  has_many :logged_changes,
+    class_name: 'Change',
+    as: :user
+    
 end

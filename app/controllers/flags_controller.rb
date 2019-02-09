@@ -1,11 +1,14 @@
 class FlagsController < ApplicationController
+  include ChangeLogger
 
   def show
+    find_record
   end
 
   def update
+    find_record
     @flag.assign_attributes(allowed_params)
-    if ChangeLogger.save @flag
+    if log_and_save @flag
       render 'show', status: 200
     else
       render_errors @flag

@@ -1,15 +1,17 @@
 class SilosController < ApplicationController
+  include ChangeLogger
 
   def index
     @silos = Silo.alphabetically
   end
 
   def show
+    find_record
   end
 
   def create
     @silo = Silo.new(allowed_params)
-    if ChangeLogger.save @silo
+    if log_and_save @silo
       render 'show', status: 201
     else
       render_errors @silo
@@ -17,8 +19,9 @@ class SilosController < ApplicationController
   end
 
   def update
+    find_record
     @silo.assign_attributes(allowed_params)
-    if ChangeLogger.save @silo
+    if log_and_save @silo
       render 'show', status: 200
     else
       render_errors @silo
@@ -26,7 +29,8 @@ class SilosController < ApplicationController
   end
 
   def destroy
-    ChangeLogger.destroy @silo
+    find_record
+    log_and_destroy @silo
     head 200
   end
 

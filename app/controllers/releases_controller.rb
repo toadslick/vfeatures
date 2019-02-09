@@ -1,15 +1,17 @@
 class ReleasesController < ApplicationController
+  include ChangeLogger
 
   def index
     @releases = Release.all
   end
 
   def show
+    find_record
   end
 
   def create
     @release = Release.build_with_flags(params_for_create)
-    if ChangeLogger.save @release
+    if log_and_save @release
       render 'show', status: 201
     else
       render_errors @release
@@ -17,8 +19,9 @@ class ReleasesController < ApplicationController
   end
 
   def update
+    find_record
     @release.assign_attributes(params_for_update)
-    if ChangeLogger.save @release
+    if log_and_save @release
       render 'show', status: 200
     else
       render_errors @release
@@ -26,7 +29,8 @@ class ReleasesController < ApplicationController
   end
 
   def destroy
-    ChangeLogger.destroy @release
+    find_record
+    log_and_destroy @release
     head 200
   end
 

@@ -5,6 +5,8 @@ class Change < ApplicationRecord
   belongs_to :target,
     polymorphic: true
 
+  belongs_to :user
+
   validates :action,
     inclusion: {
       in: ACTIONS
@@ -14,6 +16,9 @@ class Change < ApplicationRecord
     presence: true
 
   validates :target_key,
+    presence: true
+
+  validates :user,
     presence: true
 
 end

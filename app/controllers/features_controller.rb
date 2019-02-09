@@ -1,15 +1,17 @@
 class FeaturesController < ApplicationController
+  include ChangeLogger
 
   def index
     @features = Feature.alphabetically
   end
 
   def show
+    find_record
   end
 
   def create
     @feature = Feature.build_with_flags(params_for_create)
-    if ChangeLogger.save @feature
+    if log_and_save @feature
       render 'show', status: 201
     else
       render_errors @feature
@@ -17,8 +19,9 @@ class FeaturesController < ApplicationController
   end
 
   def update
+    find_record
     @feature.assign_attributes(params_for_update)
-    if ChangeLogger.save @feature
+    if log_and_save @feature
       render 'show', status: 200
     else
       render_errors @feature
@@ -26,7 +29,8 @@ class FeaturesController < ApplicationController
   end
 
   def destroy
-    ChangeLogger.destroy @feature
+    find_record
+    log_and_destroy @feature
     head 200
   end
 
