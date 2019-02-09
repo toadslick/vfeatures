@@ -6,7 +6,6 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
-require 'devise/jwt/test_helpers'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -58,7 +57,7 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include JSON::SchemaMatchers
   config.include Devise::Test::ControllerHelpers, type: :controller
-  config.include Devise::JWT::TestHelpers, type: :controller
+  config.include TestHelpers, type: :controller
 
   config.json_schemas = Hash.new do |hash, key|
     path = File.join(Dir.pwd, "spec", "schemas", "#{key}.yml")

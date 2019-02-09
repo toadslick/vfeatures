@@ -27,7 +27,6 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'rack-cors'
 
 gem 'strip_attributes'
-
 gem 'devise-jwt'
 gem 'net-ldap'
 
@@ -41,6 +40,7 @@ group :development, :test do
   gem 'json-schema-rspec'
   gem 'rails-controller-testing'
   gem 'timecop'
+  gem 'dotenv-rails'
 end
 
 group :development do

@@ -41,6 +41,9 @@ RSpec.describe FeaturesController, type: :controller do
   end
 
   describe 'POST #create' do
+    let!(:user) { create(:user) }
+    before { auth_headers(user) }
+
     context 'with valid params' do
       let!(:params) {{ feature: { key: "  \n foo \t " }}}
 
