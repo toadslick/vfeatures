@@ -56,6 +56,7 @@ RSpec.configure do |config|
 
   config.include FactoryBot::Syntax::Methods
   config.include JSON::SchemaMatchers
+  config.include Devise::Test::ControllerHelpers, type: :controller
 
   config.json_schemas = Hash.new do |hash, key|
     path = File.join(Dir.pwd, "spec", "schemas", "#{key}.yml")

@@ -31,9 +31,9 @@ module ChangeLogger
 			diff: record.changes,
 		})
 		ActiveRecord::Base.transaction do
-			change.save
+			logged = change.save
 			result = yield record
-			raise ActiveRecord::Rollback unless result
+			raise ActiveRecord::Rollback unless result && logged
 			result
 		end
 	end
