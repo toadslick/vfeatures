@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_05_045510) do
+ActiveRecord::Schema.define(version: 2019_02_09_125504) do
 
   create_table "changes", force: :cascade do |t|
     t.string "action"
@@ -55,6 +55,15 @@ ActiveRecord::Schema.define(version: 2019_02_05_045510) do
     t.datetime "updated_at", null: false
     t.index ["key"], name: "index_silos_on_key", unique: true
     t.index ["release_id"], name: "index_silos_on_release_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "username", null: false
+    t.string "jti", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["jti"], name: "index_users_on_jti", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
 end

@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+
+  devise_for :users,
+    path: '',
+    path_names: {
+      sign_in: 'login',
+      sign_out: 'logout'
+    }
+
   resources :silos    , only: [:index, :show, :create, :update, :destroy]
   resources :features , only: [:index, :show, :create, :update, :destroy]
   resources :releases , only: [:index, :show, :create, :update, :destroy]
