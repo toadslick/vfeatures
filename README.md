@@ -50,3 +50,29 @@ Variable | Description
 `VFEATURES_SECRET_KEY` | The key used to generate JSON Web Tokens
 `VFEATURES_LDAP_HOST` | The IP address of the Active Directory domain controller.
 `VFEATURES_LDAP_PORT` | The port of the Active Directory domain controller.
+
+# API Endpoints
+
+Verb | Path | Authenticated? | Description | Parameters
+---- | ---- | -------------- | ----------- | ----------
+`POST`   | `/login`         |   | Authenticate against Active Directory. If successful, returns a JSON Web Token.
+`DELETE` | `/logout`        |   | End the user session by destroying the JSON Web Token.
+`GET`    | `/silos`         |   | Returns a list of every silo.
+`POST`   | `/silos`         | x | Create a new silo.
+`GET`    | `/silos/:id`     |   | Returns the details of a silo.
+`PUT`    | `/silos/:id`     | x | Edit a silo.
+`DELETE` | `/silos/:id`     | x | Delete a silo.
+`GET`    | `/features`      |   | Returns a list of every feature.
+`POST`   | `/features`      | x | Create a new feature.
+`GET`    | `/features/:id`  |   | Returns the details of a feature and its flags.
+`PUT`    | `/features/:id`  | x | Edit a feature.
+`DELETE` | `/features/:id`  | x | Delete a feature.
+`GET`    | `/releases`      |   | Returns a list of every release.
+`POST`   | `/releases`      | x | Create a new release.
+`GET`    | `/releases/:id`  |   | Returns the details of a release and its flags.
+`PUT`    | `/releases/:id`  | x | Edit a release.
+`DELETE` | `/releases/:id`  | x | Delete a release.
+`GET`    | `/flags/:id`     |   | Returns the details of a flag.
+`PUT`    | `/flags/:id`     | x | Enable or disable a flag.
+`GET`    | `/changes`       |   |
+`GET`    | `/users`         |   |
