@@ -6,19 +6,23 @@ Feature flags are organized using these models:
 * features
 * flags
 
-Each flag represents whether a feature is enabled or disabled for a given release.
+Each flag represents whether a feature is enabled (on) or disabled (off) for a given release.
 
 Flags can be visualized like this:
 
-                                            RELEASES
-                         | release-4.22 | release-4.21 | release-4.20
-              FeatureFoo |      ❌      |      ❌      |      ❌
-    FEATURES  FeatureBar |      ✅      |      ❌      |      ❌
-              FeatureBaz |      ✅      |      ✅      |      ✅
+  | release-4.22 | release-4.21 | release-4.20
+- | ------------ | ------------ | ------------
+FeatureFoo | off | off | off
+FeatureBar | ON | off | off
+FeatureBaz | ON | ON | ON
 
 Each silo is assigned a release. More than one silo can be on the same release.
 
-    SILO      QA           | STAGING      | HOTFIX       | PRODUCTION
-    RELEASE   release-4.22 | release-4.21 | release-4.20 | release-4.20
+Silo | Release
+---- | -------
+qa | release-4.22
+staging | release-4.21
+hotfix | release-4.20
+production | release-4.20
 
-By selecting the release, you determine which flags are enabled on that silo.
+The selected release determines which features are enabled on that silo.
