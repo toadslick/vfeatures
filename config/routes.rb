@@ -12,4 +12,5 @@ Rails.application.routes.draw do
   resources :releases , only: [:index, :show, :create, :update, :destroy]
   resources :flags    , only: [:show, :update]
   resources :changes  , only: [:index]
+  resources :users    , only: [:index]
 end
