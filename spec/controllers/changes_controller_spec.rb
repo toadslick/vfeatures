@@ -141,21 +141,56 @@ RSpec.describe ChangesController, type: :controller do
       end
     end
 
+    context 'with valid user_id param' do
+      let!(:user) { create(:user) }
+      let!(:changes) {[
+        create(:change),
+        create(:change, user_id: user.id),
+        create(:change),
+        create(:change, user_id: user.id),
+      ]}
+      let!(:params) {{
+        user_id: user.id,
+      }}
+
+      it 'returns a page of Change records with the given user_id' do
+        get :index, params: params
+        expect(assigns(:changes).length).to eq(2)
+        expect(assigns(:changes)).to include(changes[1])
+        expect(assigns(:changes)).to include(changes[3])
+      end
+    end
+
+    context 'with invalid user_id param' do
+      let!(:changes) { create_list(:change, 2) }
+      let!(:params) {{
+        user_id: 666,
+      }}
+
+      it 'returns an empty set' do
+        get :index, params: params
+        expect(assigns(:changes)).to be_empty
+      end
+    end
+
     context 'when all params are combined' do
       let!(:release) { create(:release) }
+      let!(:users) { create_list(:user, 2) }
       let!(:changes) {[
-        *Timecop.freeze(1.days.ago) { create_list(:change, 3, target: release, target_key: 'foo'      ) },
-        *Timecop.freeze(7.days.ago) { create_list(:change, 3, target: release, target_key: release.key) },
-        *Timecop.freeze(2.days.ago) { create_list(:change, 3, target: release, target_key: release.key) },
-        *Timecop.freeze(3.days.ago) { create_list(:change, 3, target: release, target_key: release.key) },
-        *Timecop.freeze(4.days.ago) { create_list(:change, 3, target: release, target_key: release.key) },
+        *Timecop.freeze(1.days.ago) { create_list(:change, 3, target: release, target_key: 'foo') },
+        *Timecop.freeze(7.days.ago) { create_list(:change, 3, target: release, target_key: release.key, user_id: users[0].id) },
+        *Timecop.freeze(2.days.ago) { create_list(:change, 3, target: release, target_key: release.key, user_id: users[0].id) },
+        *Timecop.freeze(3.days.ago) { create_list(:change, 3, target: release, target_key: release.key, user_id: users[0].id) },
+        *Timecop.freeze(4.days.ago) { create_list(:change, 3, target: release, target_key: release.key, user_id: users[0].id) },
         *Timecop.freeze(2.days.ago) { create_list(:change, 3,                  target_key: release.key) },
+        *Timecop.freeze(1.days.ago) { create_list(:change, 3, target: release, target_key: release.key, user_id: users[1].id) },
       ]}
       let!(:params) {{
         page: 1,
         target_id: release.id,
         target_type: 'Release',
         target_key: release.key,
+        user_id: users[0].id,
       }}
 
       it 'returns the expected page of records' do

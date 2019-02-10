@@ -11,6 +11,7 @@ class ChangesController < ApplicationController
     target_type
     target_id
     target_key
+    user_id
   )
 
   def query

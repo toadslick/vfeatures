@@ -42,6 +42,7 @@ definitions:
       - target_type
       - target_id
       - target_key
+      - user_id
       - diff
       properties:
         id:
@@ -54,6 +55,8 @@ definitions:
           $ref: '#/definitions/id'
         target_key:
           $ref: '#/definitions/string'
+        user_id:
+          $ref: '#/definitions/id'
         diff:
           $ref: '#/definitions/diff'
 
