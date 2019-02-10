@@ -53,26 +53,26 @@ Variable | Description
 
 # API Endpoints
 
-Verb | Path | Authenticated? | Description | Parameters
----- | ---- | -------------- | ----------- | ----------
-`POST`   | `/login`         |   | Authenticate against Active Directory. If successful, returns a JSON Web Token.
-`DELETE` | `/logout`        |   | End the user session by destroying the JSON Web Token.
-`GET`    | `/silos`         |   | Returns a list of every silo.
-`POST`   | `/silos`         | x | Create a new silo.
-`GET`    | `/silos/:id`     |   | Returns the details of a silo.
-`PUT`    | `/silos/:id`     | x | Edit a silo.
-`DELETE` | `/silos/:id`     | x | Delete a silo.
-`GET`    | `/features`      |   | Returns a list of every feature.
-`POST`   | `/features`      | x | Create a new feature.
-`GET`    | `/features/:id`  |   | Returns the details of a feature and its flags.
-`PUT`    | `/features/:id`  | x | Edit a feature.
-`DELETE` | `/features/:id`  | x | Delete a feature.
-`GET`    | `/releases`      |   | Returns a list of every release.
-`POST`   | `/releases`      | x | Create a new release.
-`GET`    | `/releases/:id`  |   | Returns the details of a release and its flags.
-`PUT`    | `/releases/:id`  | x | Edit a release.
-`DELETE` | `/releases/:id`  | x | Delete a release.
-`GET`    | `/flags/:id`     |   | Returns the details of a flag.
-`PUT`    | `/flags/:id`     | x | Enable or disable a flag.
-`GET`    | `/changes`       |   |
-`GET`    | `/users`         |   |
+Verb | Path | Description | Parameters
+---- | ---- | ----------- | ----------
+`POST`   | `/login`        | Authenticate against Active Directory. If successful, returns a JSON Web Token.
+`DELETE` | `/logout`       | End the user session by destroying the JSON Web Token.
+`GET`    | `/silos`        | Returns a list of every silo.
+`POST`   | `/silos`        | Create a new silo.
+`GET`    | `/silos/:id`    | Returns the details of a silo.
+`PUT`    | `/silos/:id`    | Edit a silo.
+`DELETE` | `/silos/:id`    | Delete a silo.
+`GET`    | `/features`     | Returns a list of every feature.
+`POST`   | `/features`     | Create a new feature.
+`GET`    | `/features/:id` | Returns the details of a feature and its flags.
+`PUT`    | `/features/:id` | Edit a feature.
+`DELETE` | `/features/:id` | Delete a feature.
+`GET`    | `/releases`     | Returns a list of every release.
+`POST`   | `/releases`     | Create a new release.
+`GET`    | `/releases/:id` | Returns the details of a release and its flags.
+`PUT`    | `/releases/:id` | Edit a release.
+`DELETE` | `/releases/:id` | Delete a release.
+`GET`    | `/flags/:id`    | Returns the details of a flag.
+`PUT`    | `/flags/:id`    | Enable or disable a flag.
+`GET`    | `/changes`      | Returns a paginated list of every logged change. Parameters may be used to filter the list.
+`GET`    | `/users`        | Returns a list of every user that has logged in at least once.
