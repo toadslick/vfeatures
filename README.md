@@ -1,10 +1,10 @@
-# vfeatures
+# Overview
 
 Feature flags are organized using these models:
-* silos
-* releases
-* features
-* flags
+* Silos
+* Releases
+* Features
+* Flags
 
 Each flag represents whether a feature is enabled (on) or disabled (off) for a given release.
 
@@ -26,3 +26,15 @@ hotfix | release-4.20
 production | release-4.20
 
 The selected release determines which features are enabled on that silo.
+
+# Authentication and Logging
+
+Authentication is performed against Active Directory and is maintained across API requests via JSON Web Tokens.
+
+Authentication is required to create, update, or destroy records. It is _not_ required to read any records.
+
+Changes to any model are logged as a Change record. Each Change records stores:
+* the action performed
+* the record that was changed
+* the diff of changed attributes
+* the user whose performed the change
