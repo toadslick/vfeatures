@@ -11,7 +11,7 @@ Each flag represents whether a feature is enabled (on) or disabled (off) for a g
 Flags can be visualized like this:
 
 Feature  | release-4.22 | release-4.21 | release-4.20
-- | ------------ | ------------ | ------------
+-------- | ------------ | ------------ | ------------
 SparklingCursorTrails | off | off | off
 AutoplayMidiMusic | ON | off | off
 MarqueeTitleText | ON | ON | ON
