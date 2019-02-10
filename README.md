@@ -38,3 +38,13 @@ Changes to any model are logged as a Change record. Each Change records stores:
 * the record that was changed
 * the diff of changed attributes
 * the user whose performed the change
+
+# Environment Variables
+
+The following environment variables are required for this app to run.
+
+A `.env` file may be placed in the project root to define these values.
+
+VFEATURES_SECRET_KEY | The key used to generate JSON Web Tokens
+VFEATURES_LDAP_HOST | The IP address of the Active Directory domain controller.
+VFEATURES_LDAP_PORT | The port of the Active Directory domain controller.
