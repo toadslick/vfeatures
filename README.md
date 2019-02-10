@@ -57,28 +57,34 @@ Verb | Path | Description | Parameters
 ---- | ---- | ----------- | ----------
 `POST`   | `/login`        | Authenticate against Active Directory. If successful, returns a JSON Web Token. | `user: { username: <string>, password: <string> }`
 `DELETE` | `/logout`       | End the user session by destroying the JSON Web Token.
+ | |
+ | |
 `GET`    | `/silos`        | Returns a list of every silo.
-
 `POST`   | `/silos`        | Create a new silo. | `silo: { key: <string>, release_id: <id> }`
 `GET`    | `/silos/:id`    | Returns the details of a silo.
 `PUT`    | `/silos/:id`    | Edit a silo. | `silo: { key: <string>, release_id: <id> }`
 `DELETE` | `/silos/:id`    | Delete a silo.
-
+ | |
+ | |
 `GET`    | `/features`     | Returns a list of every feature.
 `POST`   | `/features`     | Create a new feature. | `feature: { key: <string> }`
 `GET`    | `/features/:id` | Returns the details of a feature and its flags.
 `PUT`    | `/features/:id` | Edit a feature. | `feature: { key: <string> }`
 `DELETE` | `/features/:id` | Delete a feature.
-
+ | |
+ | |
 `GET`    | `/releases`     | Returns a list of every release.
 `POST`   | `/releases`     | Create a new release. | `release: { key: <string> }`
 `GET`    | `/releases/:id` | Returns the details of a release and its flags.
 `PUT`    | `/releases/:id` | Edit a release. | `release: { key: <string> }`
 `DELETE` | `/releases/:id` | Delete a release.
-
+ | |
+ | |
 `GET`    | `/flags/:id`    | Returns the details of a flag.
 `PUT`    | `/flags/:id`    | Enable or disable a flag. | `flag: { enabled: <boolean> }`
-
+ | |
+ | |
 `GET`    | `/changes`      | Returns a paginated list of every logged change. Parameters may be used to filter the list. | `page: <integer>, action: <string>, target_key: <string>, target_id: <id>, target_type: <string>, user_id: <id>`
-
+ | |
+ | |
 `GET`    | `/users`        | Returns a list of every user that has logged in at least once.
