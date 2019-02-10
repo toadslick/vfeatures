@@ -47,6 +47,6 @@ A `.env` file may be placed in the project root to define these values.
 
 Variable | Description
 -------- | -----------
-VFEATURES_SECRET_KEY | The key used to generate JSON Web Tokens
-VFEATURES_LDAP_HOST | The IP address of the Active Directory domain controller.
-VFEATURES_LDAP_PORT | The port of the Active Directory domain controller.
+`VFEATURES_SECRET_KEY` | The key used to generate JSON Web Tokens
+`VFEATURES_LDAP_HOST` | The IP address of the Active Directory domain controller.
+`VFEATURES_LDAP_PORT` | The port of the Active Directory domain controller.
