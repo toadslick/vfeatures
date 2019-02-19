@@ -50,6 +50,7 @@ Variable | Description
 `VFEATURES_SECRET_KEY` | The key used to generate JSON Web Tokens
 `VFEATURES_LDAP_HOST` | The IP address of the Active Directory domain controller.
 `VFEATURES_LDAP_PORT` | The port of the Active Directory domain controller.
+`VFEATURES_LDAP_DOMAIN` | The Active Directory domain, such as `example.com`.
 
 # API Endpoints
 
