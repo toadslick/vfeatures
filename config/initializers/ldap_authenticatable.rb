@@ -9,11 +9,12 @@ module Devise
         if params[:user]
           username = params[:user][:username].downcase.chomp
           password = params[:user][:password]
+          return fail!(:invalid_login) if password.blank?
           if auth_via_ldap(username, password)
             user = User.find_or_create_by(username: username)
             success!(user)
           else
-            return fail(:invalid_login)
+            fail!(:invalid_login)
           end
         end
       end
