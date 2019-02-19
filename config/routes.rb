@@ -4,7 +4,10 @@ Rails.application.routes.draw do
     path: '',
     path_names: {
       sign_in: 'login',
-      sign_out: 'logout'
+      sign_out: 'logout',
+    },
+    controllers: {
+      sessions: 'sessions',
     }
 
   resources :silos    , only: [:index, :show, :create, :update, :destroy]

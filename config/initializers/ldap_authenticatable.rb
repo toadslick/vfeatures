@@ -7,7 +7,7 @@ module Devise
 
       def authenticate!
         if params[:user]
-          username = params[:user][:username]
+          username = params[:user][:username].downcase.chomp
           password = params[:user][:password]
           if auth_via_ldap(username, password)
             user = User.find_or_create_by(username: username)
@@ -19,10 +19,11 @@ module Devise
       end
 
       def auth_via_ldap(username, password)
+        email = username + '@' + ENV['VFEATURES_LDAP_DOMAIN']
         ldap = Net::LDAP.new
         ldap.host = ENV['VFEATURES_LDAP_HOST']
         ldap.port = ENV['VFEATURES_LDAP_PORT']
-        ldap.auth username, password
+        ldap.auth email, password
         ldap.bind
       end
     end

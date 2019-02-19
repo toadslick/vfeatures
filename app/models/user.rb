@@ -8,5 +8,8 @@ class User < ApplicationRecord
   has_many :logged_changes,
     class_name: 'Change',
     as: :user
-    
+
+  def encrypted_password
+    ''
+  end
 end
