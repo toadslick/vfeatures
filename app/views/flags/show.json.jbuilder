@@ -1,4 +1,4 @@
-json.(@flag, :id)
+json.(@flag, :id, :enabled)
 
 json.release @flag.release, :id, :key
 

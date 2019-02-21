@@ -5,6 +5,7 @@ required:
 - id
 - release
 - feature
+- enabled
 
 properties:
   id:
@@ -13,6 +14,8 @@ properties:
     $ref: '#/definitions/association'
   feature:
     $ref: '#/definitions/association'
+  enabled:
+    $ref: '#/definitions/boolean'
 
 definitions:
   id:

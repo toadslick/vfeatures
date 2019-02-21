@@ -20,6 +20,10 @@ module Devise
       end
 
       def auth_via_ldap(username, password)
+
+        # TODO: delete this line before releasing to production.
+        return true if Rails.env.development? || Rails.env.test?
+
         email = username + '@' + ENV['VFEATURES_LDAP_DOMAIN']
         ldap = Net::LDAP.new
         ldap.host = ENV['VFEATURES_LDAP_HOST']
