@@ -232,7 +232,7 @@ RSpec.describe SilosController, type: :controller do
 
     it 'returns a success response with no body' do
       delete :destroy, params: params
-      expect(response.status).to eq(200)
+      expect(response.status).to eq(204)
       expect(response.body).to be_blank
     end
 

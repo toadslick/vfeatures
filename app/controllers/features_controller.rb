@@ -31,7 +31,7 @@ class FeaturesController < ApplicationController
 
   def destroy
     log_and_destroy @feature
-    head 200
+    head 204
   end
 
   private

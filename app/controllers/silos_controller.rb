@@ -31,7 +31,7 @@ class SilosController < ApplicationController
 
   def destroy
     log_and_destroy @silo
-    head 200
+    head 204
   end
 
   private

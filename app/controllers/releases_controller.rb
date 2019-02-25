@@ -31,7 +31,7 @@ class ReleasesController < ApplicationController
 
   def destroy
     log_and_destroy @release
-    head 200
+    head 204
   end
 
   private
