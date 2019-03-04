@@ -5,7 +5,7 @@ class ReleasesController < ApplicationController
   before_action :find_record, only: [:show, :update, :destroy]
 
   def index
-    @releases = Release.all
+    @releases = Release.alphabetically
   end
 
   def show

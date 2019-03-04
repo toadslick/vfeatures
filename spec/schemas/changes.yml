@@ -17,6 +17,9 @@ definitions:
     type: string
   number:
     type: integer
+  datetime:
+    type: string
+    format: datetime
 
   pagination:
     type: object
@@ -44,6 +47,7 @@ definitions:
       - target_key
       - user_id
       - diff
+      - created_at
       properties:
         id:
           $ref: '#/definitions/id'
@@ -59,6 +63,8 @@ definitions:
           $ref: '#/definitions/id'
         diff:
           $ref: '#/definitions/diff'
+        created_at:
+          $ref: '#/definitions/datetime'
 
   diff:
     type: object
