@@ -8,6 +8,7 @@ class ChangesController < ApplicationController
   private
 
   WHERE_PARAMS = %i(
+    target_action
     target_type
     target_id
     target_key

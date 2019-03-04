@@ -173,6 +173,37 @@ RSpec.describe ChangesController, type: :controller do
       end
     end
 
+    context 'with valid action param' do
+      let!(:changes) {[
+        create(:change, target_action: 'create'),
+        create(:change, target_action: 'update'),
+        create(:change, target_action: 'create'),
+        create(:change, target_action: 'destroy'),
+      ]}
+      let!(:params) {{
+        target_action: 'create',
+      }}
+
+      it 'returns a page of Change records with the given user_id' do
+        get :index, params: params
+        expect(assigns(:changes).length).to eq(2)
+        expect(assigns(:changes)).to include(changes[0])
+        expect(assigns(:changes)).to include(changes[2])
+      end
+    end
+
+    context 'with invalid target_action param' do
+      let!(:changes) { create_list(:change, 2) }
+      let!(:params) {{
+        target_action: 'foo',
+      }}
+
+      it 'returns an empty set' do
+        get :index, params: params
+        expect(assigns(:changes)).to be_empty
+      end
+    end
+
     context 'when all params are combined' do
       let!(:release) { create(:release) }
       let!(:users) { create_list(:user, 2) }

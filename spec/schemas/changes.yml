@@ -41,7 +41,7 @@ definitions:
       additionalProperties: false
       required:
       - id
-      - action
+      - target_action
       - target_type
       - target_id
       - target_key
@@ -51,7 +51,7 @@ definitions:
       properties:
         id:
           $ref: '#/definitions/id'
-        action:
+        target_action:
           $ref: '#/definitions/string'
         target_type:
           $ref: '#/definitions/string'

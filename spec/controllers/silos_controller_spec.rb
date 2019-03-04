@@ -73,7 +73,7 @@ RSpec.describe SilosController, type: :controller do
           post :create, params: params
         }.to change{ Change.count }.by(1)
         change = Change.latest_record
-        expect(change.action).to eq('create')
+        expect(change.target_action).to eq('create')
         expect(change.target).to eq(assigns(:silo))
         expect(change.diff.keys).to include('key')
         expect(change.user).to eq(user)
@@ -162,7 +162,7 @@ RSpec.describe SilosController, type: :controller do
             silo: { key: 'foo' }}
         }.to change{ Change.count }.by(1)
         change = Change.latest_record
-        expect(change.action).to eq('update')
+        expect(change.target_action).to eq('update')
         expect(change.target).to eq(silo)
         expect(change.diff.keys).to include('key')
         expect(change.user).to eq(user)
@@ -241,7 +241,7 @@ RSpec.describe SilosController, type: :controller do
         delete :destroy, params: params
       }.to change{ Change.count }.by(1)
       change = Change.latest_record
-      expect(change.action).to eq('destroy')
+      expect(change.target_action).to eq('destroy')
       expect(change.target_id).to eq(silo.id)
       expect(change.target_type).to eq('Silo')
       expect(change.target_key).to eq(silo.key)

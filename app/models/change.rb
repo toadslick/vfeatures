@@ -7,7 +7,7 @@ class Change < ApplicationRecord
 
   belongs_to :user
 
-  validates :action,
+  validates :target_action,
     inclusion: {
       in: ACTIONS
     }

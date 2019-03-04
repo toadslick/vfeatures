@@ -13,10 +13,10 @@
 ActiveRecord::Schema.define(version: 2019_02_09_125504) do
 
   create_table "changes", force: :cascade do |t|
-    t.string "action"
-    t.string "target_key"
     t.string "target_type"
     t.integer "target_id"
+    t.string "target_action"
+    t.string "target_key"
     t.json "diff"
     t.integer "user_id"
     t.datetime "created_at", null: false

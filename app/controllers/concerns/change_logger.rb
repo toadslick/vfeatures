@@ -23,7 +23,7 @@ module ChangeLogger
 			user: current_user,
 			target: record,
 			target_key: record.key,
-			action: action,
+			target_action: action,
 			diff: record.changes,
 		})
 		ActiveRecord::Base.transaction do
