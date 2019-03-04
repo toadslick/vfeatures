@@ -1,3 +1,5 @@
 json.(@silo, :id, :key)
 
-json.release @silo.release, :id, :key
+if @silo.release
+  json.release @silo.release, :id, :key
+end

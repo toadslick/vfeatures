@@ -11,6 +11,8 @@ items:
     id:
       type: integer
     release_id:
-      type: integer
+      type:
+        - integer
+        - null
     key:
       type: string

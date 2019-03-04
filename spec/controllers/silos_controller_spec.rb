@@ -24,6 +24,21 @@ RSpec.describe SilosController, type: :controller do
       expect(json[1]['key']).to eq('bbb')
       expect(json[2]['key']).to eq('ccc')
     end
+
+    context 'when a silo is not associated with a release' do
+      before do
+        silos[0].release.destroy
+        silos[2].release.destroy
+      end
+
+      it 'returns a list of every silo' do
+        get :index
+        json = JSON.parse(response.body)
+        expect(response.status).to eq(200)
+        expect(response.body).to match_json_schema(:silos)
+        expect(json.length).to eq(3)
+      end
+    end
   end
 
   describe 'GET #show' do
@@ -37,6 +52,22 @@ RSpec.describe SilosController, type: :controller do
       expect(response.status).to eq(200)
       expect(response.body).to match_json_schema(:silo)
       expect(json['key']).to eq(silo.key)
+      expect(json['release']['id']).to eq(silo.release.id)
+    end
+
+    context 'when the silo is not associated with a release' do
+      before do
+        silo.release.destroy
+      end
+
+      it 'returns a single silo' do
+        get :show, params: params
+        json = JSON.parse(response.body)
+        expect(response.status).to eq(200)
+        expect(response.body).to match_json_schema(:silo)
+        expect(json['key']).to eq(silo.key)
+        expect(json['release']).to be_nil
+      end
     end
   end
 

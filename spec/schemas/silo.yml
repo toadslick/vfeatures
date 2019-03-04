@@ -4,7 +4,6 @@ additionalProperties: false
 required:
 - id
 - key
-- release
 properties:
   id:
     $ref: '#/definitions/id'
